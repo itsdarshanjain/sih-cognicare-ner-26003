@@ -4,6 +4,7 @@ import { useApp, SUPPORTED_LANGUAGES, THEMES } from './context/AppContext';
 
 // Pages
 import Landing from './pages/Landing';
+import SmritiSaathiWidget from './components/SmritiSaathiWidget';
 import PatientHub from './pages/PatientHub';
 import Reminders from './pages/Reminders';
 import CaregiverDashboard from './pages/CaregiverDashboard';
@@ -132,6 +133,7 @@ function AppLayout({ children, portalType }) {
 
       <div className="main-content">
         {children}
+        <SmritiSaathiWidget />
         <footer className="app-footer">
           <div className="footer-content">
             <div className="footer-brand"><Heart size={14} /> {t('appName')}</div>
