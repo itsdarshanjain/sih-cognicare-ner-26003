@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Check, Volume2, Clock } from 'lucide-react';
+import { Check, Volume2, Clock, Plus, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { speak } from '../utils/tts';
 import { playSuccess } from '../utils/audio';
 
-// Reminders defined using translation keys — all text renders in selected language
-const REMINDER_DEFS = [
+// Base static reminders
+const BASE_REMINDERS = [
   { id: 1,  time: '07:00', labelKey: 'morningMedicine',  detailKey: 'morningMedicineDetail',  icon: '💊', category: 'medicine',  urgency: 'high'   },
   { id: 2,  time: '08:00', labelKey: 'drinkWater',       detailKey: 'drinkWaterDetail',        icon: '💧', category: 'water',    urgency: 'medium' },
   { id: 3,  time: '09:00', labelKey: 'morningWalk',      detailKey: 'morningWalkDetail',       icon: '🚶', category: 'exercise', urgency: 'low'    },
@@ -32,23 +32,71 @@ const CATEGORY_COLORS = {
   rest:     { bg: 'rgba(10,126,106,0.08)', border: 'rgba(10,126,106,0.2)' },
   therapy:  { bg: 'rgba(211,84,0,0.08)',   border: 'rgba(211,84,0,0.2)'   },
   sleep:    { bg: 'rgba(44,62,80,0.08)',   border: 'rgba(44,62,80,0.2)'   },
+  custom:   { bg: 'rgba(52,152,219,0.08)', border: 'rgba(52,152,219,0.2)' },
 };
 
 export default function Reminders() {
   const { t, language } = useApp();
   const [completed, setCompleted] = useState(() => {
-    try { return new Set(JSON.parse(localStorage.getItem('cogni_reminders') || '[]')); } catch { return new Set(); }
+    try { return new Set(JSON.parse(localStorage.getItem('cogni_reminders_completed') || '[]')); } catch { return new Set(); }
   });
+  
+  const [customReminders, setCustomReminders] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('cogni_custom_reminders') || '[]'); } catch { return []; }
+  });
+
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newTime, setNewTime] = useState('12:00');
+  const [newTitle, setNewTitle] = useState('');
+  const [newDetail, setNewDetail] = useState('');
 
+  // Request Notification Permission only when needed (e.g. when adding a custom reminder)
+
+  const allReminders = [...BASE_REMINDERS, ...customReminders].sort((a, b) => a.time.localeCompare(b.time));
+
+  // Timer loop for time update and notifications
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+      
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      // To prevent duplicate alerts in the same minute, we check seconds
+      if (now.getSeconds() === 0) {
+        const activeReminder = allReminders.find(r => r.time === timeStr && !completed.has(r.id));
+        if (activeReminder) {
+          triggerAlert(activeReminder);
+        }
+      }
+    }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [allReminders, completed]);
+
+  const triggerAlert = (r) => {
+    const title = r.isCustom ? r.labelKey : t(r.labelKey);
+    const detail = r.isCustom ? r.detailKey : t(r.detailKey);
+    
+    // Browser notification
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification(`CogniCare: ${title}`, {
+        body: detail,
+        icon: '/favicon.ico' // Assuming a favicon exists
+      });
+    }
+    
+    // Audio alert
+    playSuccess();
+    speak(`Reminder: ${title}. ${detail}`, language);
+  };
 
   useEffect(() => {
-    localStorage.setItem('cogni_reminders', JSON.stringify([...completed]));
+    localStorage.setItem('cogni_reminders_completed', JSON.stringify([...completed]));
   }, [completed]);
+  
+  useEffect(() => {
+    localStorage.setItem('cogni_custom_reminders', JSON.stringify(customReminders));
+  }, [customReminders]);
 
   const toggle = (id) => {
     setCompleted(prev => {
@@ -60,23 +108,53 @@ export default function Reminders() {
   };
 
   const speakReminder = (r) => {
-    speak(`${t(r.labelKey)}. ${t(r.detailKey)}`, language);
+    const label = r.isCustom ? r.labelKey : t(r.labelKey);
+    const detail = r.isCustom ? r.detailKey : t(r.detailKey);
+    speak(`${label}. ${detail}`, language);
   };
 
-  const progress = Math.round((completed.size / REMINDER_DEFS.length) * 100);
-  const medicinesDone = REMINDER_DEFS.filter(r => r.category === 'medicine' && completed.has(r.id)).length;
-  const totalMedicines = REMINDER_DEFS.filter(r => r.category === 'medicine').length;
-  const waterDone = REMINDER_DEFS.filter(r => r.category === 'water' && completed.has(r.id)).length;
-  const totalWater = REMINDER_DEFS.filter(r => r.category === 'water').length;
+  const handleAddReminder = () => {
+    if ('Notification' in window && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+    if (newTime && newTitle) {
+      const newR = {
+        id: Date.now(),
+        time: newTime,
+        labelKey: newTitle, // using raw text for custom
+        detailKey: newDetail, // using raw text for custom
+        icon: '🔔',
+        category: 'custom',
+        urgency: 'medium',
+        isCustom: true
+      };
+      setCustomReminders(prev => [...prev, newR]);
+      setShowAddModal(false);
+      setNewTitle('');
+      setNewDetail('');
+      setNewTime('12:00');
+    }
+  };
+
+  const progress = allReminders.length > 0 ? Math.round((completed.size / allReminders.length) * 100) : 0;
+  const medicinesDone = allReminders.filter(r => r.category === 'medicine' && completed.has(r.id)).length;
+  const totalMedicines = allReminders.filter(r => r.category === 'medicine').length;
+  const waterDone = allReminders.filter(r => r.category === 'water' && completed.has(r.id)).length;
+  const totalWater = allReminders.filter(r => r.category === 'water').length;
   const timeStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   return (
     <>
-      <div className="page-header">
-        <h2>🔔 {t('reminders')}</h2>
-        <p>{language === 'en'
-          ? 'Your daily schedule — tap each item when completed. Caregivers are notified of missed reminders.'
-          : t('gamesSubtitle')}</p>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h2>🔔 {t('reminders')}</h2>
+          <p>{language === 'en'
+            ? 'Your daily schedule — tap each item when completed. Caregivers are notified of missed reminders.'
+            : t('gamesSubtitle')}</p>
+        </div>
+        <button onClick={() => setShowAddModal(true)} className="btn btn-primary" style={{ padding: '8px 16px' }}>
+          <Plus size={18} /> {t('addReminderBtn') || '+ Add Reminder'}
+        </button>
       </div>
       <div className="page-content">
         {/* KPI Strip */}
@@ -89,7 +167,7 @@ export default function Reminders() {
           <div className="kpi-card green">
             <div className="kpi-label">{t('overallProgress')}</div>
             <div className="kpi-value">{progress}%</div>
-            <div className="kpi-change">{completed.size}/{REMINDER_DEFS.length} ✓</div>
+            <div className="kpi-change">{completed.size}/{allReminders.length} ✓</div>
           </div>
           <div className="kpi-card red">
             <div className="kpi-label">{t('medicinesLabel')}</div>
@@ -114,11 +192,11 @@ export default function Reminders() {
           </div>
         </div>
 
-        {/* Reminder List — labels and details from t() so they update on language change */}
-        {REMINDER_DEFS.map((r, i) => {
+        {/* Reminder List */}
+        {allReminders.map((r, i) => {
           const colors = CATEGORY_COLORS[r.category] || CATEGORY_COLORS.rest;
-          const label  = t(r.labelKey);
-          const detail = t(r.detailKey);
+          const label  = r.isCustom ? r.labelKey : t(r.labelKey);
+          const detail = r.isCustom ? r.detailKey : t(r.detailKey);
           return (
             <div
               key={r.id}
@@ -151,6 +229,43 @@ export default function Reminders() {
           );
         })}
       </div>
+
+      {/* Add Custom Reminder Modal */}
+      {showAddModal && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div className="card animate-scale" style={{ width: 400, maxWidth: '90%', background: 'var(--bg-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
+              <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>{t('addReminder') || 'Add Custom Reminder'}</h3>
+              <button onClick={() => setShowAddModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: 6, color: 'var(--text-muted)' }}>{t('timeLabel') || 'Time'}</label>
+              <input type="time" value={newTime} onChange={e => setNewTime(e.target.value)} style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }} />
+            </div>
+            
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: 6, color: 'var(--text-muted)' }}>{t('titleLabel') || 'Title'}</label>
+              <input type="text" placeholder="e.g. Video Call with Son" value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }} />
+            </div>
+
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: 6, color: 'var(--text-muted)' }}>{t('detailLabel') || 'Details (Optional)'}</label>
+              <input type="text" placeholder="e.g. Set up laptop and wait" value={newDetail} onChange={e => setNewDetail(e.target.value)} style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-color)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }} />
+            </div>
+
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button onClick={() => setShowAddModal(false)} className="btn btn-outline" style={{ flex: 1 }}>{t('cancel') || 'Cancel'}</button>
+              <button onClick={handleAddReminder} disabled={!newTitle || !newTime} className="btn btn-primary" style={{ flex: 1 }}>{t('saveReminder') || 'Save'}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

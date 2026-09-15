@@ -57,6 +57,10 @@ const TRANSLATIONS = {
     eveningMedicine: 'Evening Medicine',
     musicTherapy: 'Music Therapy',
     sleepPrep: 'Sleep Preparation',
+    smritiPhone: 'Smriti Phone',
+    smritiPhoneDesc: 'Talk to your AI companion in your native language.',
+    howAreYouFeeling: 'How are you feeling today?',
+    moodCheckInDesc: 'Take a moment to let us know how you are feeling.',
     // Reminder details
     morningMedicineDetail: 'Take prescribed morning tablets with warm water',
     drinkWaterDetail: 'Have a glass of warm water — stay hydrated',
@@ -90,6 +94,15 @@ const TRANSLATIONS = {
     culturalConnections: 'Cultural Connections',
     colourWord: 'Colour & Word',
     proverbCompletion: 'Proverb Wisdom',
+    oddOneOut: 'Odd One Out',
+    familyFaces: 'Family Faces',
+    addReminder: 'Add Custom Reminder',
+    addReminderBtn: '+ Add Reminder',
+    saveReminder: 'Save Reminder',
+    cancel: 'Cancel',
+    timeLabel: 'Time',
+    titleLabel: 'Title',
+    detailLabel: 'Details',
   },
 
   as: { // Assamese
@@ -174,6 +187,15 @@ const TRANSLATIONS = {
     culturalConnections: 'সাংস্কৃতিক সংযোগ',
     colourWord: 'ৰং আৰু শব্দ',
     proverbCompletion: 'প্ৰবাদ জ্ঞান',
+    oddOneOut: 'অস্বাভাৱিক বাছনি কৰক',
+    familyFaces: 'পৰিয়ালৰ মুখসমূহ',
+    addReminder: 'কাষ্টম সোঁৱৰণী যোগ কৰক',
+    addReminderBtn: '+ সোঁৱৰণী যোগ কৰক',
+    saveReminder: 'সোঁৱৰণী সংৰক্ষণ কৰক',
+    cancel: 'বাতিল কৰক',
+    timeLabel: 'সময়',
+    titleLabel: 'শিৰোনাম',
+    detailLabel: 'বিৱৰণ',
   },
 
   mni: { // Manipuri (Meitei Mayek transliterated)
@@ -258,6 +280,15 @@ const TRANSLATIONS = {
     culturalConnections: 'থৌৱারোল সংযোগ',
     colourWord: 'রং অমদি ৱার্ড',
     proverbCompletion: 'ৱাখল জ্ঞান',
+    oddOneOut: 'তোপ তোপ্পা খন্বা',
+    familyFaces: 'ইমুংগী মশকশিং',
+    addReminder: 'কাষ্টম রিমাইন্ডার হাপচিনবা',
+    addReminderBtn: '+ রিমাইন্ডার হাপচিনবা',
+    saveReminder: 'রিমাইন্ডার সেভ তৌবা',
+    cancel: 'কেন্সেল তৌবা',
+    timeLabel: 'মতম',
+    titleLabel: 'মিংথোল',
+    detailLabel: 'অকুপ্পা ৱারোল',
   },
 
   hi: { // Hindi
@@ -342,6 +373,15 @@ const TRANSLATIONS = {
     culturalConnections: 'सांस्कृतिक संबंध',
     colourWord: 'रंग और शब्द',
     proverbCompletion: 'कहावत ज्ञान',
+    oddOneOut: 'विषम चुनें',
+    familyFaces: 'परिवार के चेहरे',
+    addReminder: 'कस्टम अनुस्मारक जोड़ें',
+    addReminderBtn: '+ अनुस्मारक जोड़ें',
+    saveReminder: 'अनुस्मारक सहेजें',
+    cancel: 'रद्द करें',
+    timeLabel: 'समय',
+    titleLabel: 'शीर्षक',
+    detailLabel: 'विवरण',
   },
 
   bn: { // Bengali
@@ -426,6 +466,15 @@ const TRANSLATIONS = {
     culturalConnections: 'সাংস্কৃতিক সংযোগ',
     colourWord: 'রঙ ও শব্দ',
     proverbCompletion: 'প্রবাদ জ্ঞান',
+    oddOneOut: 'অস্বাভাবিকটি বেছে নিন',
+    familyFaces: 'পরিবারের মুখগুলি',
+    addReminder: 'কাস্টম অনুস্মারক যোগ করুন',
+    addReminderBtn: '+ অনুস্মারক যোগ করুন',
+    saveReminder: 'অনুস্মারক সংরক্ষণ করুন',
+    cancel: 'বাতিল করুন',
+    timeLabel: 'সময়',
+    titleLabel: 'শিরোনাম',
+    detailLabel: 'বিবরণ',
   },
 
   kha: { // Khasi
@@ -510,6 +559,15 @@ const TRANSLATIONS = {
     culturalConnections: 'Ki jingkyndong iing seng',
     colourWord: 'Rang bad word',
     proverbCompletion: 'Ka jingïing iing',
+    oddOneOut: 'Jied iaba kong',
+    familyFaces: 'Ki dur khmat iing',
+    addReminder: 'Thep jingpynmaw thymmai',
+    addReminderBtn: '+ Thep jingpynmaw',
+    saveReminder: 'Save jingpynmaw',
+    cancel: 'Nym thep',
+    timeLabel: 'Por',
+    titleLabel: 'Kyrteng',
+    detailLabel: 'Batai',
   },
 
   mzo: { // Mizo
@@ -594,18 +652,56 @@ const TRANSLATIONS = {
     culturalConnections: 'Mimal inthlahna',
     colourWord: 'Rang leh thu',
     proverbCompletion: 'Lehkha thiam',
+    oddOneOut: 'A dang thlang chhuak rawh',
+    familyFaces: 'Chhungte hmel',
+    addReminder: 'Hriattirna thar dah',
+    addReminderBtn: '+ Hriattirna dah',
+    saveReminder: 'Hriattirna save',
+    cancel: 'Sut leh',
+    timeLabel: 'Hun',
+    titleLabel: 'Thupui',
+    detailLabel: 'Sawifiahna',
   },
 };
 
 // ============================================================
-// THEMES
+// MODES & THEMES
 // ============================================================
-export const THEMES = {
-  green: {
-    name: 'Forest Green',
-    emoji: '🌿',
+export const MODES = {
+  light: {
+    name: 'Light',
+    emoji: '☀️',
     '--bg-primary': '#F2F7F2',
     '--bg-secondary': '#FFFFFF',
+    '--bg-sidebar': '#0B3D3D',
+    '--bg-card': '#FFFFFF',
+    '--text-primary': '#0A1C11',
+    '--text-secondary': '#1F3F2A',
+    '--text-muted': '#4A6E55',
+    '--border-color': 'rgba(10,80,60,0.12)',
+  },
+  dark: {
+    name: 'Dark',
+    emoji: '🌙',
+    '--bg-primary': '#0D1117',
+    '--bg-secondary': '#161B22',
+    '--bg-card': '#1E232B',
+    '--bg-card-hover': '#262D35',
+    '--bg-sidebar': '#090C10',
+    '--text-primary': '#F0F6FC',
+    '--text-secondary': '#C9D1D9',
+    '--text-muted': '#8B949E',
+    '--text-on-dark': '#FFFFFF',
+    '--text-on-dark-muted': '#C9D1D9',
+    '--border-color': '#30363D',
+  },
+};
+
+export const THEMES = {
+  green: {
+    name: 'Forest',
+    emoji: '🌿',
+    '--bg-primary': '#F2F7F2',
     '--bg-sidebar': '#0B3D3D',
     '--accent-teal': '#0A7E6A',
     '--accent-green': '#1D9B5F',
@@ -615,10 +711,9 @@ export const THEMES = {
     '--gradient-glow': 'radial-gradient(circle at 50% 0%, rgba(10,126,106,0.12) 0%, transparent 70%)',
   },
   blue: {
-    name: 'Ocean Blue',
+    name: 'Ocean',
     emoji: '🌊',
     '--bg-primary': '#F0F4FF',
-    '--bg-secondary': '#FFFFFF',
     '--bg-sidebar': '#1A2A4A',
     '--accent-teal': '#1B66C9',
     '--accent-green': '#0D8FA4',
@@ -628,10 +723,9 @@ export const THEMES = {
     '--gradient-glow': 'radial-gradient(circle at 50% 0%, rgba(27,102,201,0.12) 0%, transparent 70%)',
   },
   purple: {
-    name: 'Twilight Purple',
+    name: 'Twilight',
     emoji: '🌸',
     '--bg-primary': '#F6F2FF',
-    '--bg-secondary': '#FFFFFF',
     '--bg-sidebar': '#2D1B4E',
     '--accent-teal': '#7C3AED',
     '--accent-green': '#9D44DE',
@@ -641,10 +735,9 @@ export const THEMES = {
     '--gradient-glow': 'radial-gradient(circle at 50% 0%, rgba(124,58,237,0.12) 0%, transparent 70%)',
   },
   amber: {
-    name: 'Warm Saffron',
+    name: 'Warm',
     emoji: '🌻',
     '--bg-primary': '#FFFBF0',
-    '--bg-secondary': '#FFFFFF',
     '--bg-sidebar': '#3D2400',
     '--accent-teal': '#C47A00',
     '--accent-green': '#A65D00',
@@ -660,25 +753,74 @@ const AppContext = createContext();
 export function AppProvider({ children }) {
   const [language, setLanguage] = useState(() => localStorage.getItem('cogni_lang') || 'en');
   const [theme, setTheme] = useState(() => localStorage.getItem('cogni_theme') || 'green');
+  const [colorMode, setColorMode] = useState(() => localStorage.getItem('cogni_mode') || 'light');
+  
+  const [difficultyLevel, setDifficultyLevel] = useState(() => {
+    return parseInt(localStorage.getItem('cogni_difficulty')) || 2; // Default level 2 (1-5 scale)
+  });
   const [gameScores, setGameScores] = useState(() => {
     try { return JSON.parse(localStorage.getItem('cogni_scores') || '[]'); } catch { return []; }
+  });
+  const [moodLogs, setMoodLogs] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('cogni_moods') || '[]'); } catch { return []; }
+  });
+  
+  const [speechLogs, setSpeechLogs] = useState(() => {
+    try { 
+      const logs = JSON.parse(localStorage.getItem('cogni_speech_logs'));
+      if (logs && logs.length > 0) return logs;
+      
+      // Mock data for demo purposes (Pre-seeding 7 days of speech data)
+      return [
+        { id: 1, timestamp: new Date(Date.now() - 86400000).toISOString(), duration: 120, wordCount: 95, fillerCount: 5, typeTokenRatio: 0.75, avgWordsPerUtterance: 5.8, fluencyScore: 78 },
+        { id: 2, timestamp: new Date(Date.now() - 86400000*2).toISOString(), duration: 180, wordCount: 140, fillerCount: 8, typeTokenRatio: 0.72, avgWordsPerUtterance: 6.1, fluencyScore: 75 },
+        { id: 3, timestamp: new Date(Date.now() - 86400000*3).toISOString(), duration: 90, wordCount: 65, fillerCount: 2, typeTokenRatio: 0.81, avgWordsPerUtterance: 6.5, fluencyScore: 82 },
+        { id: 4, timestamp: new Date(Date.now() - 86400000*4).toISOString(), duration: 150, wordCount: 110, fillerCount: 12, typeTokenRatio: 0.65, avgWordsPerUtterance: 4.8, fluencyScore: 65 },
+        { id: 5, timestamp: new Date(Date.now() - 86400000*5).toISOString(), duration: 200, wordCount: 160, fillerCount: 15, typeTokenRatio: 0.62, avgWordsPerUtterance: 4.5, fluencyScore: 61 }
+      ];
+    } catch { return []; }
   });
 
   // Persist language
   useEffect(() => { localStorage.setItem('cogni_lang', language); }, [language]);
   // Persist theme
   useEffect(() => { localStorage.setItem('cogni_theme', theme); }, [theme]);
+  // Persist mode
+  useEffect(() => { localStorage.setItem('cogni_mode', colorMode); }, [colorMode]);
+  // Persist difficulty
+  useEffect(() => { localStorage.setItem('cogni_difficulty', difficultyLevel.toString()); }, [difficultyLevel]);
   // Persist scores
   useEffect(() => { localStorage.setItem('cogni_scores', JSON.stringify(gameScores)); }, [gameScores]);
+  // Persist moods
+  useEffect(() => { localStorage.setItem('cogni_moods', JSON.stringify(moodLogs)); }, [moodLogs]);
+  // Persist speech logs
+  useEffect(() => { localStorage.setItem('cogni_speech_logs', JSON.stringify(speechLogs)); }, [speechLogs]);
 
   // Apply theme CSS variables to :root
   useEffect(() => {
-    const t = THEMES[theme] || THEMES.green;
     const root = document.documentElement;
-    Object.entries(t).forEach(([key, val]) => {
+    const modeVars = MODES[colorMode] || MODES.light;
+    const themeVars = THEMES[theme] || THEMES.green;
+    
+    // Apply theme (Accents, gradients, and light-mode tinted backgrounds)
+    Object.entries(themeVars).forEach(([key, val]) => {
       if (key.startsWith('--')) root.style.setProperty(key, val);
     });
-  }, [theme]);
+
+    if (colorMode === 'dark') {
+      // Overwrite backgrounds/text with dark mode vars
+      Object.entries(MODES.dark).forEach(([key, val]) => {
+        if (key.startsWith('--')) root.style.setProperty(key, val);
+      });
+    } else {
+      // Apply light mode text/card vars (skipping bg-primary and bg-sidebar so the Theme's tint remains)
+      Object.entries(MODES.light).forEach(([key, val]) => {
+        if (key !== '--bg-primary' && key !== '--bg-sidebar' && key.startsWith('--')) {
+          root.style.setProperty(key, val);
+        }
+      });
+    }
+  }, [theme, colorMode]);
 
   // Translation function — falls back to English key
   const t = (key) => {
@@ -686,21 +828,68 @@ export function AppProvider({ children }) {
   };
 
   const addScore = (gameName, score, maxScore, responseTimeMs) => {
+    const accuracy = Math.round((score / maxScore) * 100);
     const entry = {
       id: Date.now(),
       game: gameName,
       score,
       maxScore,
-      accuracy: Math.round((score / maxScore) * 100),
+      accuracy,
       responseTimeMs,
       timestamp: new Date().toISOString(),
       language,
+      difficultyPlayed: difficultyLevel
     };
-    setGameScores(prev => [entry, ...prev].slice(0, 200));
+    
+    setGameScores(prev => {
+      const newScores = [entry, ...prev].slice(0, 200);
+      
+      // --- AI ADAPTIVE DIFFICULTY ENGINE ---
+      // Check last 3 games. If consistently high/low, adapt difficulty
+      if (newScores.length >= 3) {
+        const last3 = newScores.slice(0, 3);
+        const avgAccuracy = last3.reduce((sum, g) => sum + g.accuracy, 0) / 3;
+        
+        if (avgAccuracy >= 85 && difficultyLevel < 5) {
+          // Patient is doing too well, increase difficulty
+          setDifficultyLevel(d => Math.min(5, d + 1));
+        } else if (avgAccuracy < 50 && difficultyLevel > 1) {
+          // Patient is struggling, decrease difficulty to reduce frustration
+          setDifficultyLevel(d => Math.max(1, d - 1));
+        }
+      }
+      return newScores;
+    });
+  };
+
+  const addMoodLog = (moodKey) => {
+    const entry = {
+      id: Date.now(),
+      mood: moodKey,
+      timestamp: new Date().toISOString()
+    };
+    setMoodLogs(prev => [entry, ...prev].slice(0, 100));
+  };
+  
+  const addSpeechLog = (logEntry) => {
+    setSpeechLogs(prev => [logEntry, ...prev].slice(0, 100));
+  };
+
+  const getGameScore = (gameName) => {
+    return gameScores.find(g => g.game === gameName) || null;
   };
 
   return (
-    <AppContext.Provider value={{ language, setLanguage, theme, setTheme, t, gameScores, addScore }}>
+    <AppContext.Provider value={{ 
+      language, setLanguage, 
+      theme, setTheme, 
+      colorMode, setColorMode,
+      difficultyLevel, setDifficultyLevel,
+      t,
+      gameScores, addScore, getGameScore,
+      moodLogs, addMoodLog,
+      speechLogs, addSpeechLog
+    }}>
       {children}
     </AppContext.Provider>
   );

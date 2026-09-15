@@ -14,11 +14,12 @@
   --bg-sidebar: #0B3D3D;
   --bg-sidebar-hover: #094A3A;
 
-  --text-primary: #122B1A;
-  --text-secondary: #355840;
-  --text-muted: #6B8C73;
+  /* ELDERLY UI/UX UPGRADE: Increased contrast for text */
+  --text-primary: #0A1C11;      /* Darker, near black */
+  --text-secondary: #1F3F2A;    /* Darker green */
+  --text-muted: #4A6E55;        /* Darkened for WCAG AAA contrast */
   --text-on-dark: #FFFFFF;
-  --text-on-dark-muted: #9AD4B8;
+  --text-on-dark-muted: #BEE3D0; /* Brighter for dark backgrounds */
 
   --accent-teal: #0A7E6A;
   --accent-teal-light: rgba(10,126,106,0.08);
@@ -134,7 +135,7 @@
    ============================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { font-size: 16px; scroll-behavior: smooth; }
+html { font-size: 18px; scroll-behavior: smooth; } /* ELDERLY UI/UX: Bumped from 16px to 18px */
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -165,7 +166,15 @@ a { text-decoration: none; color: inherit; }
   position: fixed;
   top: 0; left: 0; bottom: 0;
   z-index: 100;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .sidebar::before {

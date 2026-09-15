@@ -251,6 +251,33 @@ export default function SmritiSaathiWidget() {
   // ── Handle Send (text or voice) ──
   const handleSendDirect = useCallback(async (text) => {
     if (!text.trim()) return;
+    const lowerText = text.toLowerCase();
+
+    // ── Voice Navigation Engine ──
+    const navCommands = [
+      { trigger: ['go home', 'dashboard', 'hub'], path: '/patient', label: 'Patient Hub' },
+      { trigger: ['play music', 'calm mode', 'therapy'], path: '/patient/games/calm-mode', label: 'Calm Mode' },
+      { trigger: ['family faces', 'photos', 'relatives'], path: '/patient/games/family-faces', label: 'Family Faces' },
+      { trigger: ['memory match', 'landmarks'], path: '/patient/games/memory-match', label: 'Memory Match' },
+      { trigger: ['daily routine', 'routines'], path: '/patient/games/daily-routine', label: 'Daily Routine' },
+      { trigger: ['caregiver', 'alerts'], path: '/caregiver', label: 'Caregiver Dashboard' },
+    ];
+
+    let navigated = false;
+    for (const cmd of navCommands) {
+      if (cmd.trigger.some(t => lowerText.includes(t))) {
+        speak(`Opening ${cmd.label} for you.`);
+        window.location.href = cmd.path; // Force navigation since useNavigate might be out of scope or tricky here
+        navigated = true;
+        setIsOpen(false);
+        break;
+      }
+    }
+    
+    if (navigated) {
+        setInputText('');
+        return;
+    }
 
     const userMsg = { sender: 'user', text: text.trim() };
     setMessages(prev => [...prev, userMsg, { sender: 'model', text: '' }]);

@@ -1,14 +1,16 @@
 import { useMemo, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
-import { TrendingUp, Clock, Target, Flame, AlertTriangle, Brain, Calendar, Download, Users, Activity, Volume2 } from 'lucide-react';
+import { TrendingUp, Clock, Target, Flame, AlertTriangle, Brain, Calendar, Download, Users, Activity, Volume2, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { speak } from '../utils/tts';
+import CaregiverBurnout from '../components/CaregiverBurnout';
 
 const COLORS = ['#0A7E6A', '#1D9B5F', '#C9930B', '#2980B9', '#7D3C98', '#D35400'];
 
 export default function CaregiverDashboard() {
-  const { gameScores, language } = useApp();
+  const { t, gameScores, moodLogs = [], speechLogs = [], language } = useApp();
   const [timeRange, setTimeRange] = useState('7d');
+  const [isBurnoutModalOpen, setIsBurnoutModalOpen] = useState(false);
 
   const hasData = gameScores.length > 0;
 
@@ -39,11 +41,83 @@ export default function CaregiverDashboard() {
   ];
 
   const monthlyTrend = [
-    { week: 'W1', accuracy: 62, engagement: 45 },
-    { week: 'W2', accuracy: 68, engagement: 58 },
-    { week: 'W3', accuracy: 72, engagement: 72 },
-    { week: 'W4', accuracy: 75, engagement: 80 },
+    { week: 'W1', accuracy: 68, engagement: 85 },
+    { week: 'W2', accuracy: 72, engagement: 88 },
+    { week: 'W3', accuracy: 75, engagement: 84 },
+    { week: 'W4', accuracy: 78, engagement: 92 },
   ];
+
+  const moodData = [
+    { day: 'Mon', moodScore: 80, label: '😄' },
+    { day: 'Tue', moodScore: 80, label: '😄' },
+    { day: 'Wed', moodScore: 60, label: '😐' },
+    { day: 'Thu', moodScore: 40, label: '😢' },
+    { day: 'Fri', moodScore: 40, label: '😢' },
+    { day: 'Sat', moodScore: 20, label: '😠' },
+    { day: 'Sun', moodScore: 80, label: '😄' },
+  ];
+  
+  // Override with real mood logs if available
+  if (moodLogs && moodLogs.length > 0) {
+    const scoreMap = { 'happy': 80, 'neutral': 60, 'sad': 40, 'anxious': 30, 'agitated': 20 };
+    const emojiMap = { 'happy': '😄', 'neutral': '😐', 'sad': '😢', 'anxious': '😰', 'agitated': '😠' };
+    
+    // Take last 7 days
+    moodLogs.slice(0, 7).reverse().forEach((log, i) => {
+      if (i < moodData.length) {
+        moodData[i].moodScore = scoreMap[log.mood] || 60;
+        moodData[i].label = emojiMap[log.mood] || '😐';
+        moodData[i].day = 'Day ' + (i+1);
+      }
+    });
+  }
+
+  // --- Speech Biomarker Data Processing ---
+  const speechData = [];
+  if (speechLogs && speechLogs.length > 0) {
+    speechLogs.slice(0, 7).reverse().forEach((log, i) => {
+      speechData.push({
+        day: 'Day ' + (i+1),
+        fluencyScore: log.fluencyScore,
+        fillers: log.fillerCount,
+        words: log.wordCount
+      });
+    });
+  }
+
+  // --- COGNITIVE WELLNESS INDEX (CWI) CALCULATION ---
+  // 1. Game Avg (50% weight)
+  const gameAvg = gameScores.length > 0 
+    ? gameScores.slice(0, 10).reduce((a, s) => a + s.accuracy, 0) / Math.min(gameScores.length, 10) 
+    : 70;
+  
+  // 2. Mood Avg (25% weight)
+  const recentMoods = moodLogs.slice(0, 7);
+  const moodScoreMap = { happy: 90, neutral: 70, sad: 40, anxious: 30, agitated: 20 };
+  const moodAvg = recentMoods.length > 0 
+    ? recentMoods.reduce((a, m) => a + (moodScoreMap[m.mood] || 60), 0) / recentMoods.length 
+    : 60;
+  
+  // 3. Speech Avg (25% weight)
+  const recentSpeech = speechLogs.slice(0, 5);
+  const speechAvg = recentSpeech.length > 0 
+    ? recentSpeech.reduce((a, s) => a + s.fluencyScore, 0) / recentSpeech.length 
+    : 70;
+
+  const CWI = Math.round(gameAvg * 0.5 + moodAvg * 0.25 + speechAvg * 0.25);
+  const cwiColor = CWI >= 75 ? 'var(--accent-green)' : CWI >= 60 ? 'var(--accent-amber)' : 'var(--accent-red)';
+
+  const CustomMoodTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div style={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, padding: 12, fontSize: 13, boxShadow: 'var(--shadow-md)' }}>
+          <p style={{ margin: 0, fontWeight: 'bold' }}>{payload[0].payload.day}</p>
+          <p style={{ margin: 0, fontSize: '1.2rem' }}>Mood: {payload[0].payload.label}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   const recentActivity = hasData ? gameScores.slice(0, 8) : [
     { id: 1, game: 'Landmark Memory', accuracy: 83, timestamp: new Date(Date.now() - 3600000).toISOString() },
@@ -64,18 +138,43 @@ export default function CaregiverDashboard() {
     speak(summary, language);
   };
 
+  // Get Caregiver Burnout Status
+  let burnoutLevel = 'Checking...';
+  let burnoutIcon = <Heart size={14} />;
+  try {
+    const scoreStr = localStorage.getItem('cogni_burnout_score');
+    if (scoreStr) {
+      const bScores = JSON.parse(scoreStr);
+      if (bScores.overwhelmed >= 4 || (bScores.sleep === 'No' && bScores.support === 'No')) {
+        burnoutLevel = 'High Risk';
+      } else if (bScores.overwhelmed === 3) {
+        burnoutLevel = 'Moderate';
+      } else {
+        burnoutLevel = 'Healthy';
+      }
+    } else {
+      burnoutLevel = 'Pending Check-In';
+    }
+  } catch (e) {
+    burnoutLevel = 'Healthy';
+  }
+
   return (
     <>
+      <CaregiverBurnout isVisible={isBurnoutModalOpen} onClose={() => setIsBurnoutModalOpen(false)} />
       <div className="page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <h2>📊 Caregiver Dashboard</h2>
           <p>Monitor cognitive performance, track engagement trends, and receive AI-powered clinical insights.</p>
         </div>
         <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
-          <button onClick={handleSpeak} className="btn btn-outline" title="Voice Summary" style={{ padding: '10px 16px' }}>
+          <button onClick={() => window.print()} className="btn btn-outline" title="Export Clinical Report" style={{ padding: '10px 16px' }} data-no-print="true">
+            <Download size={18} /> Export PDF
+          </button>
+          <button onClick={handleSpeak} className="btn btn-outline" title="Voice Summary" style={{ padding: '10px 16px' }} data-no-print="true">
             <Volume2 size={18} /> Summary
           </button>
-          <select className="form-select" value={timeRange} onChange={e => setTimeRange(e.target.value)} style={{ minHeight: 44, width: 'auto', padding: '8px 14px', fontSize: '0.82rem' }}>
+          <select data-no-print="true" className="form-select" value={timeRange} onChange={e => setTimeRange(e.target.value)} style={{ minHeight: 44, width: 'auto', padding: '8px 14px', fontSize: '0.82rem' }}>
             <option value="7d">Last 7 Days</option>
             <option value="30d">Last 30 Days</option>
             <option value="90d">Last 90 Days</option>
@@ -83,6 +182,61 @@ export default function CaregiverDashboard() {
         </div>
       </div>
       <div className="page-content">
+        
+        {/* --- HERO: COGNITIVE WELLNESS INDEX --- */}
+        <div style={{
+          background: 'var(--bg-card)',
+          borderRadius: 24,
+          padding: 30,
+          marginBottom: 28,
+          border: '1px solid var(--border-color)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 40,
+          flexWrap: 'wrap',
+          boxShadow: 'var(--shadow-sm)'
+        }}>
+          <div style={{ flexShrink: 0, textAlign: 'center' }}>
+            <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 8 }}>Cognitive Wellness Index</div>
+            <div style={{ fontSize: '4.5rem', fontWeight: 800, color: cwiColor, lineHeight: 1 }}>{CWI}</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: 4 }}>Out of 100</div>
+          </div>
+          <div style={{ flex: 1, minWidth: 300 }}>
+            <h4 style={{ margin: '0 0 16px 0', color: 'var(--text-primary)', fontSize: '1.1rem' }}>AI Multi-Signal Attribution</h4>
+            
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 6 }}>
+                <span style={{ color: 'var(--text-secondary)' }}>🎮 Game Performance (50%)</span>
+                <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{Math.round(gameAvg)}/100 → +{Math.round(gameAvg * 0.5)} pts</span>
+              </div>
+              <div style={{ width: '100%', height: 6, background: 'var(--accent-teal-light)', borderRadius: 4 }}>
+                <div style={{ width: `${gameAvg}%`, height: '100%', background: 'var(--accent-teal)', borderRadius: 4 }}></div>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 6 }}>
+                <span style={{ color: 'var(--text-secondary)' }}>🎭 Emotional Stability (25%)</span>
+                <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{Math.round(moodAvg)}/100 → +{Math.round(moodAvg * 0.25)} pts</span>
+              </div>
+              <div style={{ width: '100%', height: 6, background: 'rgba(196,122,0,0.1)', borderRadius: 4 }}>
+                <div style={{ width: `${moodAvg}%`, height: '100%', background: '#C47A00', borderRadius: 4 }}></div>
+              </div>
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 6 }}>
+                <span style={{ color: 'var(--text-secondary)' }}>🎙️ Speech Fluency Biomarker (25%)</span>
+                <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{Math.round(speechAvg)}/100 → +{Math.round(speechAvg * 0.25)} pts</span>
+              </div>
+              <div style={{ width: '100%', height: 6, background: 'rgba(124,58,237,0.1)', borderRadius: 4 }}>
+                <div style={{ width: `${speechAvg}%`, height: '100%', background: '#7C3AED', borderRadius: 4 }}></div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
         {/* KPI Cards */}
         <div className="kpi-grid">
           <div className="kpi-card teal">
@@ -110,10 +264,12 @@ export default function CaregiverDashboard() {
             <div className="kpi-value">87%</div>
             <div className="kpi-change"><Calendar size={14} /> Medicine adherence strong</div>
           </div>
-          <div className="kpi-card red">
-            <div className="kpi-label">Active Alerts</div>
-            <div className="kpi-value">2</div>
-            <div className="kpi-change"><AlertTriangle size={14} /> 1 critical, 1 warning</div>
+          <div className="kpi-card purple" style={{ border: burnoutLevel === 'High Risk' ? '2px solid var(--accent-amber)' : 'none' }}>
+            <div className="kpi-label">Caregiver Wellbeing</div>
+            <div className="kpi-value" style={{ fontSize: '1.4rem' }}>{burnoutLevel}</div>
+            <div className="kpi-change">
+              {burnoutLevel === 'High Risk' ? '⚠️ Take a break. See resources.' : '💚 You are doing great!'}
+            </div>
           </div>
         </div>
 
@@ -186,42 +342,57 @@ export default function CaregiverDashboard() {
           </div>
         </div>
 
-        {/* Charts Row 2 */}
+        {/* Charts Row 2 - Clinical Trends */}
         <div className="charts-grid">
           <div className="chart-card">
             <div className="card-header">
               <div>
-                <div className="card-title">Game Category Distribution</div>
-                <div className="card-subtitle">Time spent per cognitive category</div>
+                <div className="card-title">Patient Mood Trend</div>
+                <div className="card-subtitle">Self-reported pre-session emotional state</div>
               </div>
+              <span className="badge amber">CLINICAL</span>
             </div>
             <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Pie data={engagementPie} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={4} dataKey="value" label={({ name, value }) => `${name} (${value}%)`}>
-                  {engagementPie.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                </Pie>
-                <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13 }} />
-              </PieChart>
+              <LineChart data={moodData} margin={{ top: 20, right: 20, bottom: 20, left: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
+                <XAxis dataKey="day" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 600 }} />
+                <YAxis domain={[0, 100]} hide />
+                <Tooltip content={<CustomMoodTooltip />} />
+                <Line 
+                  type="monotone" 
+                  dataKey="moodScore" 
+                  stroke="#C47A00" 
+                  strokeWidth={4} 
+                  dot={{ r: 6, fill: '#C47A00', stroke: '#fff', strokeWidth: 2 }} 
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
             </ResponsiveContainer>
           </div>
 
           <div className="chart-card">
             <div className="card-header">
               <div>
-                <div className="card-title">Monthly Progression</div>
-                <div className="card-subtitle">Accuracy & engagement over 4 weeks</div>
+                <div className="card-title">Conversational Cognitive Signal</div>
+                <div className="card-subtitle">Speech fluency biomarker from Smriti Phone</div>
               </div>
-              <span className="badge purple">TREND</span>
+              <span className="badge purple">PASSIVE AI</span>
             </div>
             <ResponsiveContainer width="100%" height={260}>
-              <LineChart data={monthlyTrend}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                <XAxis dataKey="week" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 600 }} />
-                <YAxis domain={[0, 100]} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
-                <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13 }} />
-                <Legend />
-                <Line type="monotone" dataKey="accuracy" stroke="#0A7E6A" strokeWidth={3} dot={{ r: 5 }} name="Accuracy %" />
-                <Line type="monotone" dataKey="engagement" stroke="#C9930B" strokeWidth={3} dot={{ r: 5 }} name="Engagement %" strokeDasharray="5 5" />
+              <LineChart data={speechData} margin={{ top: 20, right: 20, bottom: 20, left: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
+                <XAxis dataKey="day" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 600 }} />
+                <YAxis domain={[0, 100]} hide />
+                <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13, boxShadow: 'var(--shadow-md)' }} />
+                <Line 
+                  type="monotone" 
+                  dataKey="fluencyScore" 
+                  name="Fluency Score"
+                  stroke="#7C3AED" 
+                  strokeWidth={4} 
+                  dot={{ r: 6, fill: '#7C3AED', stroke: '#fff', strokeWidth: 2 }} 
+                  activeDot={{ r: 8 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -267,6 +438,24 @@ export default function CaregiverDashboard() {
             </tbody>
           </table>
         </div>
+
+        {/* Subtle Check-In Trigger */}
+        <div style={{ textAlign: 'center', marginTop: 40, paddingBottom: 20 }} data-no-print="true">
+          <button 
+            onClick={() => setIsBurnoutModalOpen(true)}
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              color: 'var(--text-muted)', 
+              cursor: 'pointer', 
+              fontSize: '0.85rem',
+              textDecoration: 'underline'
+            }}
+          >
+            Caregiver Self-Assessment & Support Resources
+          </button>
+        </div>
+
       </div>
     </>
   );

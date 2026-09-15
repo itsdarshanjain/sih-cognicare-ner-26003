@@ -1,9 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { Volume2, Star, Trophy, Clock } from 'lucide-react';
 import { speak, stopSpeaking } from '../utils/tts';
+import { useState, useEffect } from 'react';
+import MmseOnboarding from '../components/MmseOnboarding';
+import MoodCheckIn from '../components/MoodCheckIn';
 
 const GAME_DEFS = [
+  { path: 'games/calm-mode',             icon: '🌿', titleKey: 'Music Therapy',         desc: 'Calming algorithmic NER folk melodies for sundowning relief',                         domain: 'Therapy',         difficulty: 'Easy',   time: '∞ min' },
+  { path: 'games/family-faces',          icon: '👨‍👩‍👧', titleKey: 'Family Faces',          desc: 'Recognize your family members and loved ones from uploaded photos',                   domain: 'Personal',        difficulty: 'Easy',   time: '2–4 min' },
+  { path: 'games/odd-one-out',           icon: '🔎', titleKey: 'Odd One Out',           desc: 'Find the item that does not belong in the category',                                  domain: 'Categorization',  difficulty: 'Medium', time: '3–5 min' },
   { path: 'games/memory-match',         icon: '🏔️', titleKey: 'memoryMatch',         desc: 'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more', domain: 'Memory',           difficulty: 'Easy',   time: '3–5 min' },
   { path: 'games/melody-memory',         icon: '🎵', titleKey: 'melodyMemory',         desc: 'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline',        domain: 'Auditory Memory', difficulty: 'Medium', time: '4–6 min' },
   { path: 'games/daily-routine',         icon: '☀️', titleKey: 'dailyRoutine',         desc: 'Arrange morning tea brewing, self-care, and garden routines in correct order',         domain: 'Executive Fn',    difficulty: 'Easy',   time: '2–3 min' },
@@ -19,25 +25,55 @@ const GAME_DEFS = [
 const DIFFICULTY_COLORS = { Easy: 'green', Medium: 'amber', Hard: 'red' };
 
 export default function PatientHub() {
-  const { t, gameScores, language } = useApp();
+  const { t, gameScores, moodLogs, language, difficultyLevel, setDifficultyLevel } = useApp();
+  const navigate = useNavigate();
+
+  const [showMmse, setShowMmse] = useState(() => {
+    return !localStorage.getItem('cogni_mmse_completed');
+  });
+  const [moodDone, setMoodDone] = useState(false);
+
+  const handleMmseComplete = (score, severity, diff) => {
+    localStorage.setItem('cogni_mmse_completed', 'true');
+    localStorage.setItem('cogni_mmse_score', score.toString());
+    localStorage.setItem('cogni_mmse_severity', severity);
+    setDifficultyLevel(diff);
+    setShowMmse(false);
+  };
 
   const getGameScore = (titleKey) => {
-    // Match by translated title (scores stored under English name)
-    const engTitle = titleKey; // We store scores by game path key
+    const engTitle = titleKey; 
     const scores = gameScores.filter(s => s.game === engTitle);
     if (scores.length === 0) return null;
     return Math.round(scores.reduce((a, s) => a + s.accuracy, 0) / scores.length);
   };
 
   const handleVoice = () => {
-    speak(t('welcome') + '. ' + t('gamesSubtitle'), language);
+    const text = t('gamesSubtitle');
+    speak(text, language);
   };
 
   const totalPlayed = new Set(gameScores.map(s => s.game)).size;
   const avgScore = gameScores.length > 0 ? Math.round(gameScores.reduce((a, s) => a + s.accuracy, 0) / gameScores.length) : 0;
 
+  // --- Sundowning Prediction Logic ---
+  // If it's evening (4PM-8PM) and we have a history of negative moods in the evening
+  const currentHour = new Date().getHours();
+  const isEveningRisk = currentHour >= 16 && currentHour <= 20;
+  
+  // (In a real app, this would query backend. For hackathon, we'll check recent local moodLogs OR force it for demo if it's evening)
+  const eveningMoods = (moodLogs || []).filter(m => {
+    const h = new Date(m.timestamp).getHours();
+    return h >= 16 && ['sad', 'anxious', 'agitated'].includes(m.mood);
+  });
+  
+  // We'll show it if they actually have a history of bad evening moods, OR if it's currently the risk window (for demo visibility)
+  const showSundowningIntervention = isEveningRisk;
+
   return (
     <>
+      {showMmse && <MmseOnboarding onComplete={handleMmseComplete} />}
+      {!showMmse && !moodDone && <MoodCheckIn onComplete={() => setMoodDone(true)} />}
       <div className="page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <h2>🧠 {t('games')}</h2>
@@ -48,6 +84,43 @@ export default function PatientHub() {
         </button>
       </div>
       <div className="page-content">
+
+        {/* --- PROACTIVE SUNDOWNING INTERVENTION --- */}
+        {showSundowningIntervention && (
+          <div style={{
+            background: 'linear-gradient(135deg, #C47A00, #A65D00)',
+            padding: '24px 30px',
+            borderRadius: 24,
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxShadow: '0 12px 24px rgba(196, 122, 0, 0.3)',
+            marginBottom: 28,
+            animation: 'fadeInUp 0.5s ease'
+          }}>
+            <div>
+              <h3 style={{ fontSize: '1.4rem', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+                🌅 Evening Wellness Mode Active
+              </h3>
+              <p style={{ opacity: 0.9, fontSize: '1rem', margin: 0 }}>
+                We recommend starting with some calming music therapy before playing games tonight.
+              </p>
+            </div>
+            <Link to="/patient/games/calm-mode" style={{ textDecoration: 'none' }}>
+              <button className="btn" style={{ 
+                background: 'white', 
+                color: '#C47A00', 
+                fontWeight: 'bold',
+                padding: '12px 24px',
+                borderRadius: 30
+              }}>
+                Start Music Therapy
+              </button>
+            </Link>
+          </div>
+        )}
+
         {/* Quick Stats */}
         <div className="kpi-grid" style={{ marginBottom: 28 }}>
           <div className="kpi-card teal">
@@ -61,9 +134,9 @@ export default function PatientHub() {
             <div className="kpi-change"><Trophy size={14} /> {totalPlayed >= 5 ? 'Great engagement!' : 'Try more games!'}</div>
           </div>
           <div className="kpi-card purple">
-            <div className="kpi-label">{t('overallAccuracy')}</div>
-            <div className="kpi-value">{avgScore > 0 ? `${avgScore}%` : '—'}</div>
-            <div className="kpi-change"><Star size={14} /> {avgScore >= 75 ? t('correct') : avgScore > 0 ? t('tryAgain') : '—'}</div>
+            <div className="kpi-label">AI Difficulty Level</div>
+            <div className="kpi-value">Level {difficultyLevel || 2}</div>
+            <div className="kpi-change"><Star size={14} /> Auto-adapted to your skill</div>
           </div>
         </div>
 

@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { AlertTriangle, TrendingDown, Brain, Droplets, Clock, Check, Bell, Filter } from 'lucide-react';
+import { useApp } from '../context/AppContext';
 
-const ALERTS = [
-  { id: 1, severity: 'high', title: 'Sundowning Pattern Detected', patient: 'Padma Devi Bora', desc: 'Evening response times increased by 35% (4-7 PM) over 3 consecutive days. Consider scheduling games before 3 PM and introducing calming music therapy.', time: '30 min ago', icon: <Clock size={20} />, recommendation: 'Move all cognitive exercises to morning slot. Enable Bamboo Flute ambient mode after 4 PM.' },
+const STATIC_ALERTS = [
   { id: 2, severity: 'high', title: 'Memory Score Decline', patient: 'Tombi Devi Thokchom', desc: 'Landmark Memory accuracy dropped from 78% to 52% over one week. Consistent downward trajectory detected.', time: '2 hours ago', icon: <TrendingDown size={20} />, recommendation: 'Reduce grid to 4 cards, enable hint mode, increase display time to 5 seconds.' },
   { id: 3, severity: 'medium', title: 'Hydration Reminder Missed', patient: 'Ramnath Sharma', desc: 'Patient has not completed 3 of 4 water reminders today. Below the recommended 6-glass daily minimum.', time: '4 hours ago', icon: <Droplets size={20} />, recommendation: 'Send caregiver notification. Enable voice reminder with louder volume.' },
   { id: 4, severity: 'medium', title: 'Music Therapy Recommendation', patient: 'Lalthanzami', desc: 'Based on Melody Memory trends, patient responds exceptionally well to instrumental stimulation (accuracy: 88%).', time: '6 hours ago', icon: <Brain size={20} />, recommendation: 'Schedule 15-min Bamboo Flute + Pung session daily at 10 AM.' },
@@ -12,10 +12,80 @@ const ALERTS = [
 ];
 
 export default function AlertsPage() {
+  const { gameScores } = useApp();
   const [filter, setFilter] = useState('all');
   const [dismissed, setDismissed] = useState(new Set());
 
-  const filtered = ALERTS.filter(a => {
+  // AI Sundowning Detection Engine
+  const dynamicAlerts = useMemo(() => {
+    const alerts = [...STATIC_ALERTS];
+    
+    if (gameScores.length > 0) {
+      let morningScores = [];
+      let eveningScores = [];
+      
+      gameScores.forEach(score => {
+        const hour = new Date(score.timestamp).getHours();
+        if (hour >= 6 && hour < 14) morningScores.push(score.accuracy); // 6 AM - 2 PM
+        if (hour >= 16 && hour < 21) eveningScores.push(score.accuracy); // 4 PM - 9 PM
+      });
+      
+      if (morningScores.length > 0 && eveningScores.length > 0) {
+        const morningAvg = morningScores.reduce((a, b) => a + b, 0) / morningScores.length;
+        const eveningAvg = eveningScores.reduce((a, b) => a + b, 0) / eveningScores.length;
+        
+        // If evening score is significantly worse (by 15% or more)
+        if (morningAvg - eveningAvg > 15) {
+          alerts.unshift({
+            id: 'sundowning-1',
+            severity: 'high',
+            title: 'Sundowning Pattern Detected (LIVE AI)',
+            patient: 'Current Patient',
+            desc: `Real-time analysis: Evening accuracy (${Math.round(eveningAvg)}%) is significantly lower than morning accuracy (${Math.round(morningAvg)}%). This indicates fatigue or sundowning syndrome.`,
+            time: 'Just now',
+            icon: <Clock size={20} />,
+            recommendation: 'Move cognitive gaming to morning slots. Enable Calm Mode / Music Therapy automatically after 4 PM.'
+          });
+        }
+      }
+
+      // AI Cognitive Decline Detection Engine (Linear Regression)
+      if (gameScores.length >= 3) {
+        const n = gameScores.length;
+        let sumX = 0;
+        let sumY = 0;
+        let sumXY = 0;
+        let sumX2 = 0;
+
+        gameScores.forEach((score, index) => {
+          const x = index;
+          const y = score.accuracy;
+          sumX += x;
+          sumY += y;
+          sumXY += (x * y);
+          sumX2 += (x * x);
+        });
+
+        const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+        
+        if (slope <= -1.0) { // Accuracy dropping by >= 1% per game on average
+          alerts.unshift({
+            id: 'decline-1',
+            severity: 'high',
+            title: 'Cognitive Decline Trend Detected (LIVE AI)',
+            patient: 'Current Patient',
+            desc: `Real-time linear regression analysis detected a downward trajectory in accuracy (slope: ${slope.toFixed(2)}). Statistically significant decline over the last ${n} sessions.`,
+            time: 'Just now',
+            icon: <TrendingDown size={20} />,
+            recommendation: 'Schedule a neurologist consultation. Adapt gameplay to errorless learning methods.'
+          });
+        }
+      }
+    }
+    return alerts;
+  }, [gameScores]);
+
+  const filtered = dynamicAlerts.filter(a => {
     if (dismissed.has(a.id)) return false;
     if (filter === 'all') return true;
     return a.severity === filter;
@@ -42,17 +112,17 @@ export default function AlertsPage() {
         <div className="kpi-grid" style={{ marginBottom: 28 }}>
           <div className="kpi-card red">
             <div className="kpi-label">Critical Alerts</div>
-            <div className="kpi-value">{ALERTS.filter(a => a.severity === 'high').length}</div>
+            <div className="kpi-value">{dynamicAlerts.filter(a => a.severity === 'high').length}</div>
             <div className="kpi-change"><AlertTriangle size={14} /> Requires immediate attention</div>
           </div>
           <div className="kpi-card amber">
             <div className="kpi-label">Warnings</div>
-            <div className="kpi-value">{ALERTS.filter(a => a.severity === 'medium').length}</div>
+            <div className="kpi-value">{dynamicAlerts.filter(a => a.severity === 'medium').length}</div>
             <div className="kpi-change"><Bell size={14} /> Monitor closely</div>
           </div>
           <div className="kpi-card green">
             <div className="kpi-label">Positive Insights</div>
-            <div className="kpi-value">{ALERTS.filter(a => a.severity === 'low').length}</div>
+            <div className="kpi-value">{dynamicAlerts.filter(a => a.severity === 'low').length}</div>
             <div className="kpi-change"><Brain size={14} /> Progress indicators</div>
           </div>
         </div>

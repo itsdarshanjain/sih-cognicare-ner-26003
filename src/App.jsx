@@ -1,15 +1,17 @@
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
-import { Brain, Gamepad2, Bell, LayoutDashboard, Users, Activity, Heart, Globe, ChevronLeft, Palette } from 'lucide-react';
-import { useApp, SUPPORTED_LANGUAGES, THEMES } from './context/AppContext';
+import { Brain, Gamepad2, Bell, LayoutDashboard, Users, Activity, Heart, Globe, ChevronLeft, Palette, Phone } from 'lucide-react';
+import { useApp, SUPPORTED_LANGUAGES, THEMES, MODES } from './context/AppContext';
 
 // Pages
 import Landing from './pages/Landing';
 import SmritiSaathiWidget from './components/SmritiSaathiWidget';
+import EmergencySOS from './components/EmergencySOS';
 import PatientHub from './pages/PatientHub';
 import Reminders from './pages/Reminders';
 import CaregiverDashboard from './pages/CaregiverDashboard';
 import PatientProfiles from './pages/PatientProfiles';
 import AlertsPage from './pages/AlertsPage';
+import SmritiPhone from './pages/SmritiPhone';
 
 // Games
 import MemoryMatch from './games/MemoryMatch';
@@ -22,13 +24,17 @@ import ColourWord from './games/ColourWord';
 import ProverbCompletion from './games/ProverbCompletion';
 import WordCompletion from './games/WordCompletion';
 import PatternReplication from './games/PatternReplication';
+import FamilyFaces from './games/FamilyFaces';
+import CalmMode from './games/CalmMode';
+import OddOneOut from './games/OddOneOut';
 
 function AppLayout({ children, portalType }) {
-  const { language, setLanguage, theme, setTheme, t } = useApp();
+  const { language, setLanguage, theme, setTheme, colorMode, setColorMode, t } = useApp();
 
   const patientNav = [
-    { path: '/patient',            label: t('games'),     icon: <Gamepad2 size={20} /> },
+    { path: '/patient',           label: t('games'),     icon: <Brain size={20} /> },
     { path: '/patient/reminders',  label: t('reminders'), icon: <Bell size={20} /> },
+    { path: '/patient/phone',      label: t('smritiPhone') || 'Smriti Phone', icon: <Phone size={20} /> },
   ];
 
   const caregiverNav = [
@@ -91,6 +97,39 @@ function AppLayout({ children, portalType }) {
             </select>
           </div>
 
+          {/* Mode Selector */}
+          <div style={{ marginBottom: 14 }}>
+            <label style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+               Appearance
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+              {Object.entries(MODES).map(([key, md]) => (
+                <button
+                  key={key}
+                  onClick={() => setColorMode(key)}
+                  style={{
+                    padding: '7px 6px',
+                    borderRadius: 8,
+                    border: colorMode === key ? '2px solid rgba(255,255,255,0.7)' : '1px solid rgba(255,255,255,0.12)',
+                    background: colorMode === key ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.05)',
+                    color: '#fff',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 5,
+                  }}
+                  title={md.name}
+                >
+                  <span>{md.emoji}</span>
+                  <span style={{ opacity: 0.85, fontSize: '0.65rem' }}>{md.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Theme Selector */}
           <div style={{ marginBottom: 14 }}>
             <label style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
@@ -134,6 +173,7 @@ function AppLayout({ children, portalType }) {
       <div className="main-content">
         {children}
         <SmritiSaathiWidget />
+        {portalType === 'patient' && <EmergencySOS />}
         <footer className="app-footer">
           <div className="footer-content">
             <div className="footer-brand"><Heart size={14} /> {t('appName')}</div>
@@ -150,7 +190,11 @@ function PatientLayout() {
     <AppLayout portalType="patient">
       <Routes>
         <Route index element={<PatientHub />} />
+        <Route path="phone" element={<SmritiPhone />} />
         <Route path="reminders" element={<Reminders />} />
+        <Route path="games/calm-mode" element={<CalmMode />} />
+        <Route path="games/family-faces" element={<FamilyFaces />} />
+        <Route path="games/odd-one-out" element={<OddOneOut />} />
         <Route path="games/memory-match" element={<MemoryMatch />} />
         <Route path="games/melody-memory" element={<MelodyMemory />} />
         <Route path="games/daily-routine" element={<DailyRoutine />} />

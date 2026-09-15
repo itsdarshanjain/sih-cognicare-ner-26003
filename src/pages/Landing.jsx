@@ -400,7 +400,7 @@ export default function Landing() {
       {/* Footer */}
       <div style={{ padding: '22px 40px', textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-muted)', background: 'var(--bg-secondary)', borderTop: '1px solid var(--border-color)' }}>
         <div style={{ marginBottom: 4 }}><strong style={{ color: 'var(--accent-teal)' }}>CogniCare NER</strong> — PS 26003 · MDoNER · AI Cognitive Gaming for Elderly Dementia</div>
-        <div>Made with ❤️ by <strong style={{ color: 'var(--accent-teal)' }}>Team Prakalp</strong> — Smart India Hackathon 2026 · LNCT Bhopal</div>
+        <div>Made with ❤️ by <strong style={{ color: 'var(--accent-teal)' }}>Team Prakalp</strong> — Smart India Hackathon 2026</div>
       </div>
     </div>
   );
