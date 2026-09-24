@@ -15,7 +15,8 @@ export default function SmritiPhone() {
   const [transcript, setTranscript] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
-  const [callSummary, setCallSummary] = useState(null); // stores analysis result
+  const [callSummary, setCallSummary] = useState(null);
+  const [callDuration, setCallDuration] = useState(0);
 
   const recognitionRef = useRef(null);
   const aiThinkingRef = useRef(false);
@@ -64,23 +65,26 @@ export default function SmritiPhone() {
     };
   }, [language]);
 
+  // Live call timer
+  useEffect(() => {
+    let timer;
+    if (callState === 'connected') {
+      timer = setInterval(() => setCallDuration(d => d + 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [callState]);
+
   const handleUserSpeech = async (text) => {
     aiThinkingRef.current = true;
     stopSpeaking(); // Stop any ongoing AI speech
     
-    // Slight delay to mimic phone latency
     setTimeout(async () => {
       let fullResponse = "";
       
       try {
-        const history = [
-          { role: 'user', parts: [{ text: "Context: You are Smriti Saathi, on a phone call with an elderly patient. Keep responses very short, conversational, and caring. Speak in their language." }] },
-          { role: 'model', parts: [{ text: "Okay, I will keep it brief and caring." }] },
-          { role: 'user', parts: [{ text: text }] }
-        ];
-
-        await streamAIResponse(history, (chunk) => {
-          fullResponse += chunk;
+        // streamAIResponse signature: (userMessage, history, onChunk)
+        await streamAIResponse(text, [], (chunk) => {
+          fullResponse = chunk;
           setAiResponse(fullResponse);
         });
 
@@ -89,6 +93,10 @@ export default function SmritiPhone() {
         speak(fullResponse, language, () => {
           setIsAiSpeaking(false);
           aiThinkingRef.current = false;
+          // Restart recognition after AI finishes speaking
+          if (recognitionRef.current && callState === 'connected' && !isMuted) {
+            try { recognitionRef.current.start(); } catch(e){}
+          }
         });
 
       } catch (err) {
@@ -114,6 +122,10 @@ export default function SmritiPhone() {
       speak(greeting, language, () => {
         setIsAiSpeaking(false);
         aiThinkingRef.current = false;
+        // Restart recognition after greeting finishes
+        if (recognitionRef.current) {
+          try { recognitionRef.current.start(); } catch(e){}
+        }
       });
       
       // Init metrics tracking
@@ -200,12 +212,12 @@ export default function SmritiPhone() {
         `}</style>
 
         {/* Status Text */}
-        <h2 style={{ fontSize: '2rem', marginBottom: 10, fontWeight: 400 }}>Smriti Saathi</h2>
+        <h2 style={{ fontSize: '2rem', marginBottom: 10, fontWeight: 400 }}>{t('phoneTitle')}</h2>
         <p style={{ color: '#aaa', fontSize: '1.2rem', marginBottom: 40 }}>
-          {callState === 'idle' && 'Ready to call...'}
-          {callState === 'calling' && 'Calling...'}
-          {callState === 'connected' && '00:00'}
-          {callState === 'ended' && 'Call Ended'}
+          {callState === 'idle' && t('readyToCall')}
+          {callState === 'calling' && t('calling')}
+          {callState === 'connected' && `${String(Math.floor(callDuration / 60)).padStart(2, '0')}:${String(callDuration % 60).padStart(2, '0')}`}
+          {callState === 'ended' && t('callEnded')}
         </p>
 
         {/* Transcript & Summary Area */}
@@ -215,7 +227,7 @@ export default function SmritiPhone() {
               {isAiSpeaking ? (
                 <p style={{ color: '#0d9488', fontSize: '1.2rem', fontStyle: 'italic', fontWeight: 600 }}>{aiResponse}</p>
               ) : (
-                <p style={{ color: '#FFF', fontSize: '1.2rem' }}>{transcript || 'Listening...'}</p>
+                <p style={{ color: '#FFF', fontSize: '1.2rem' }}>{transcript || t('listening')}</p>
               )}
             </>
           )}
@@ -228,19 +240,19 @@ export default function SmritiPhone() {
               animation: 'fadeInUp 0.5s ease',
               border: '1px solid rgba(255,255,255,0.2)'
             }}>
-              <h4 style={{ margin: '0 0 12px 0', color: 'var(--accent-teal-light)' }}>AI Speech Biomarker Analysis</h4>
+              <h4 style={{ margin: '0 0 12px 0', color: '#2dd4bf' }}>{t('biomarkerAnalysis')}</h4>
               <div style={{ display: 'flex', justifyContent: 'space-around', color: '#ccc', fontSize: '0.9rem' }}>
                 <div>
                   <div style={{ fontSize: '1.4rem', color: '#FFF', fontWeight: 700 }}>{callSummary.wordCount}</div>
-                  Words Spoken
+                  {t('wordsSpoken')}
                 </div>
                 <div>
                   <div style={{ fontSize: '1.4rem', color: '#FFF', fontWeight: 700 }}>{callSummary.fillerCount}</div>
-                  Filler Words
+                  {t('fillerWords')}
                 </div>
                 <div>
                   <div style={{ fontSize: '1.4rem', color: '#4CAF50', fontWeight: 700 }}>{callSummary.fluencyScore}/100</div>
-                  Fluency Score
+                  {t('fluencyScore')}
                 </div>
               </div>
             </div>

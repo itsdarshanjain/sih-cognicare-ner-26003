@@ -5,6 +5,44 @@ import { createContext, useContext, useState, useEffect } from 'react';
 // ============================================================
 const TRANSLATIONS = {
   en: {
+    'Across 8 cognitive domains': 'Across 8 cognitive domains',
+    'Great engagement!': 'Great engagement!',
+    'Try more games!': 'Try more games!',
+    'AI Difficulty Level': 'AI Difficulty Level',
+    'Level': 'Level',
+    'Auto-adapted to your skill': 'Auto-adapted to your skill',
+    'Music Therapy': 'Music Therapy',
+    'Family Faces': 'Family Faces',
+    'Odd One Out': 'Odd One Out',
+    'Therapy': 'Therapy',
+    'Personal': 'Personal',
+    'Categorization': 'Categorization',
+    'Memory': 'Memory',
+    'Auditory Memory': 'Auditory Memory',
+    'Executive Fn': 'Executive Fn',
+    'Numerical': 'Numerical',
+    'Semantic Memory': 'Semantic Memory',
+    'Attention': 'Attention',
+    'Language': 'Language',
+    'Lexical': 'Lexical',
+    'Visuospatial': 'Visuospatial',
+    'Easy': 'Easy',
+    'Medium': 'Medium',
+    'Hard': 'Hard',
+    'Calming algorithmic NER folk melodies for sundowning relief': 'Calming algorithmic NER folk melodies for sundowning relief',
+    'Recognize your family members and loved ones from uploaded photos': 'Recognize your family members and loved ones from uploaded photos',
+    'Find the item that does not belong in the category': 'Find the item that does not belong in the category',
+    'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more': 'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more',
+    'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline': 'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline',
+    'Arrange morning tea brewing, self-care, and garden routines in correct order': 'Arrange morning tea brewing, self-care, and garden routines in correct order',
+    'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets': 'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets',
+    'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes': 'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes',
+    'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya': 'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya',
+    'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)': 'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)',
+    'Complete NER folk proverbs — "The bamboo that bends is stronger than..."': 'Complete NER folk proverbs — "The bamboo that bends is stronger than..."',
+    'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery': 'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery',
+    'Memorize highlighted handloom weave cells, then replicate from memory': 'Memorize highlighted handloom weave cells, then replicate from memory',
+
     appName: 'CogniCare NER',
     tagline: 'Memory Care Platform',
     patient: 'Patient',
@@ -103,9 +141,57 @@ const TRANSLATIONS = {
     timeLabel: 'Time',
     titleLabel: 'Title',
     detailLabel: 'Details',
+    // SmritiPhone & CalmMode
+    phoneTitle: 'Smriti Saathi Phone',
+    radioTitle: 'Smriti Radio & 40Hz Therapy',
+    radioDesc: 'Nostalgic algorithmic music therapy for calming and sundowning relief.',
+    gammaTherapy: '40Hz Gamma Therapy',
+    gammaDesc: 'Reduces amyloid plaques',
+    powerOff: 'POWER OFF',
+    callEnded: 'Call Ended',
+    calling: 'Calling...',
+    readyToCall: 'Ready to call...',
+    listening: 'Listening...',
+    biomarkerAnalysis: 'AI Speech Biomarker Analysis',
+    wordsSpoken: 'Words Spoken',
+    fillerWords: 'Filler Words',
+    fluencyScore: 'Fluency Score',
   },
 
-  as: { // Assamese
+  as: {
+    'Caregiver Dashboard': 'পৰিচৰ্যাকাৰী ডেছবোৰ্ড',
+    'Monitor cognitive performance, track engagement trends, and receive AI-powered clinical insights.': 'জ্ঞানমূলক প্ৰদৰ্শন নিৰীক্ষণ কৰক, ট্ৰেণ্ডসমূহ অনুসৰণ কৰক আৰু AI-চালিত ক্লিনিকেল অন্তৰ্দৃষ্টি লাভ কৰক।',
+    'Cognitive Wellness Index': 'জ্ঞানমূলক সুস্থতা সূচক',
+    'Out of 100': '১০০ৰ ভিতৰত',
+    'AI Multi-Signal Attribution': 'AI মাল্টি-চিগনেল এট্ৰিবিউচন',
+    'Game Performance': 'খেলৰ প্ৰদৰ্শন',
+    'Emotional Stability': 'আৱেগিক স্থিৰতা',
+    'Speech Fluency Biomarker': 'কথন সাৱলীলতা বায়োমাৰ্কাৰ',
+    'Sessions This Week': 'এই সপ্তাহৰ অধিবেশনসমূহ',
+    'Average Accuracy': 'গড় নিখুঁততা',
+    'Avg Response Time': 'গড় সঁহাৰিৰ সময়',
+    'Active Streak': 'সক্ৰিয় ধাৰাবাহিকতা',
+    'Reminders Completed': 'সোঁৱৰণী সম্পূৰ্ণ',
+    'Caregiver Wellbeing': 'পৰিচৰ্যাকাৰীৰ সুস্থতা',
+    'Sundowning Pattern Detected': 'ছানডাউনিং আৰ্হি ধৰা পৰিছে',
+    'CRITICAL': 'জটিল',
+    'AI Recommendation:': 'AI পৰামৰ্শ:',
+    '7-Day Cognitive Performance': '৭-দিনীয়া জ্ঞানমূলক প্ৰদৰ্শন',
+    'Accuracy & response time trends': 'নিখুঁততা আৰু সঁহাৰিৰ সময়ৰ ট্ৰেণ্ড',
+    'Cognitive Digital Twin': 'জ্ঞানমূলক ডিজিটেল টুইন',
+    'Radar mapping of 6 brain domains (CST)': '৬টা মগজু ডমেইনৰ ৰাডাৰ মেপিং',
+    'Patient Mood Trend': 'ৰোগীৰ মেজাজৰ ট্ৰেণ্ড',
+    'Self-reported pre-session emotional state': 'অধিবেশনৰ পূৰ্বৰ আৱেগিক অৱস্থা',
+    'Conversational Cognitive Signal': 'কথোপকথনমূলক জ্ঞানমূলক সংকেত',
+    'Speech fluency biomarker from Smriti Phone': 'স্মৃতি ফোনৰ পৰা কথন সাৱলীলতা বায়োমাৰ্কাৰ',
+    'Recent Game Sessions': 'শেহতীয়া খেলৰ অধিবেশনসমূহ',
+    'Detailed session history with accuracy tracking': 'নিখুঁততা ট্ৰেকিংৰ সৈতে বিতং অধিবেশনৰ ইতিহাস',
+    'Live Analysis': 'লাইভ বিশ্লেষণ',
+    'Accuracy': 'নিখুঁততা',
+    'Performance': 'প্ৰদৰ্শন',
+    'Time': 'সময়',
+    'Game Exercise': 'খেলৰ অনুশীলন',
+ // Assamese
     appName: 'কগ্নিকেয়াৰ NER',
     tagline: 'স্মৃতি যত্ন মঞ্চ',
     patient: 'ৰোগী',
@@ -196,9 +282,108 @@ const TRANSLATIONS = {
     timeLabel: 'সময়',
     titleLabel: 'শিৰোনাম',
     detailLabel: 'বিৱৰণ',
+    phoneTitle: 'স্মৃতি সাথি ফোন',
+    radioTitle: 'স্মৃতি ৰেডিঅ’ আৰু 40Hz থেৰাপী',
+    radioDesc: 'শান্ত আৰু নিদ্ৰাহীনতা উপশমৰ বাবে পুৰণি সুৰীয়া সংগীত চিকিৎসা।',
+    gammaTherapy: '40Hz গামা থেৰাপী',
+    gammaDesc: 'এমাইলয়ড প্লেক হ্ৰাস কৰে',
+    powerOff: 'বন্ধ কৰক',
+    callEnded: 'কল সমাপ্ত',
+    calling: 'কল কৰা হৈছে...',
+    readyToCall: 'কল কৰিবলৈ সাজু...',
+    listening: 'শুনি থকা হৈছে...',
+    biomarkerAnalysis: 'AI স্পীচ্ছ বায়োমাৰ্কাৰ বিশ্লেষণ',
+    wordsSpoken: 'কোৱা শব্দ',
+    fillerWords: 'অলাগতিয়াল শব্দ',
+    fluencyScore: 'সাৱলীলতাৰ স্কোৰ',
+    
+    // Missing Dashboard Stats
+    'Across 8 cognitive domains': '৮টা জ্ঞানমূলক ডমেইনৰ মাজেৰে',
+    'Great engagement!': 'খেলত ভাল ব্যস্ততা!',
+    'Try more games!': 'অধিক খেল চেষ্টা কৰক!',
+    'AI Difficulty Level': 'AI অসুবিধাৰ স্তৰ',
+    'Level': 'স্তৰ',
+    'Auto-adapted to your skill': 'আপোনাৰ দক্ষতাৰ লগত স্বয়ংক্ৰিয়ভাৱে খাপ খোৱা',
+
+    // Game Titles
+    'Music Therapy': 'মিউজিক থেৰাপি',
+    'Family Faces': 'পৰিয়ালৰ মুখ',
+    'Odd One Out': 'অড ৱান আউট',
+
+    // Domains
+    'Therapy': 'থেৰাপি',
+    'Personal': 'ব্যক্তিগত',
+    'Categorization': 'শ্ৰেণীবিভাজন',
+    'Memory': 'স্মৃতি',
+    'Auditory Memory': 'শ্ৰৱণ স্মৃতি',
+    'Executive Fn': 'কাৰ্যবাহী কাৰ্য',
+    'Numerical': 'সাংখ্যিক',
+    'Semantic Memory': 'অৰ্থগত স্মৃতি',
+    'Attention': 'মনোযোগ',
+    'Language': 'ভাষা',
+    'Lexical': 'শাব্দিক',
+    'Visuospatial': 'দৃষ্টিনন্দন',
+
+    // Difficulty
+    'Easy': 'সহজ',
+    'Medium': 'মাধ্যম',
+    'Hard': 'কঠিন',
+
+    // Game Descriptions
+    'Calming algorithmic NER folk melodies for sundowning relief': 'সূৰ্যাস্তৰ সময়ত সকাহৰ বাবে শান্ত এলগৰিথমিক এন ই আৰ লোক সুৰ',
+    'Recognize your family members and loved ones from uploaded photos': 'আপলোড কৰা ফটোৰ পৰা আপোনাৰ পৰিয়ালৰ সদস্য আৰু আপোনজনক চিনি পাওক',
+    'Find the item that does not belong in the category': 'যিটো বস্তু শ্ৰেণীৰ অন্তৰ্গত নহয় সেইটো বিচাৰি উলিয়াওক',
+    'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more': 'এন ই আৰ ল্যাণ্ডমাৰ্ক কাৰ্ড মিলাওক — কাজিৰঙা, টাৱাং আৰু অধিকৰ সৈতে দৃশ্য-স্থানিক স্মৃতি প্ৰশিক্ষণ দিয়ে',
+    'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline': 'অফলাইনত সংশ্লেষিত বিহু ঢোল, পেপা, পুং আৰু বাঁহৰ বাঁহীৰ ক্ৰম মনত পেলাওক',
+    'Arrange morning tea brewing, self-care, and garden routines in correct order': 'ৰাতিপুৱাৰ চাহ বনোৱা, নিজৰ যত্ন লোৱা, আৰু বাগিচাৰ কাম সঠিক ক্ৰমত সজাওক',
+    'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets': 'ভোট জলকীয়া, বাঁহৰ গাজ, মেখেলা চাদৰ খাদ্য বনাম হস্তশিল্পৰ পাচিত সজাওক',
+    'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes': 'ক্ৰমবোৰত হেৰুওৱা সংখ্যাবোৰ বিচাৰক — চাহৰ পাচি, তামোলৰ থোক, ৫ টকীয়া নোট গণনা কৰক',
+    'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya': 'হৰ্ণবিল উৎসৱ ↔ নাগালেণ্ড, বিহু ↔ অসম, ৰুট ব্ৰীজ ↔ মেঘালয় মিলাওক',
+    'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)': 'ষ্ট্ৰুপ পৰীক্ষা — শব্দটো নহয়, পাঠটোৰ ৰংটোত টিপক (মনোযোগ আৰু বাধা)',
+    'Complete NER folk proverbs — "The bamboo that bends is stronger than..."': 'এন ই আৰ লোক প্ৰবাদ সম্পূৰ্ণ কৰক — "যি বাঁহ বেঁকা হয় সি বেছি শক্তিশালী..."',
+    'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery': 'K_Z_R_NGA, SH_LL_NG ত হেৰুওৱা আখৰ পূৰণ কৰক — এন ই আৰ ঠাইৰ নাম পুনৰুদ্ধাৰ',
+    'Memorize highlighted handloom weave cells, then replicate from memory': 'হাইলাইট কৰা হস্ততাঁত বয়ন কোষবোৰ মনত ৰাখক, তাৰ পিছত স্মৃতিৰ পৰা পুনৰাবৃত্তি কৰক',
   },
 
-  mni: { // Manipuri (Meitei Mayek transliterated)
+  mni: {
+    'Across 8 cognitive domains': 'কোগনিটিভ ডোমেইন ৮গী মরমদা',
+    'Great engagement!': 'ফজবা থৌরাং!',
+    'Try more games!': 'অতোপ্পা থৌরাং ৱাখল্লো!',
+    'AI Difficulty Level': 'AI ৱাখল্লোনগী লেভেল',
+    'Level': 'লেভেল',
+    'Auto-adapted to your skill': 'মশা মশাগী থৌরাংদা শেম্বা',
+    'Music Therapy': 'ৱারোল ইশৈ',
+    'Family Faces': 'ইমুংগী মশকশিং',
+    'Odd One Out': 'তোপ তোপ্পা খন্বা',
+    'Therapy': 'ইশৈ',
+    'Personal': 'ইশাগী',
+    'Categorization': 'মখল খাইদোকপা',
+    'Memory': 'ৱাখল',
+    'Auditory Memory': 'তাবগী ৱাখল',
+    'Executive Fn': 'থবক তৌবা',
+    'Numerical': 'নম্বর',
+    'Semantic Memory': 'অৰ্থগী ৱাখল',
+    'Attention': 'পুক্নিং',
+    'Language': 'লোন',
+    'Lexical': 'ৱাহৈ',
+    'Visuospatial': 'উবগী ৱাখল',
+    'Easy': 'লাইবা',
+    'Medium': 'মচিন',
+    'Hard': 'অরূবা',
+    'Calming algorithmic NER folk melodies for sundowning relief': 'মতমগী মতুং ইন্না NER ৱারোল ইশৈ',
+    'Recognize your family members and loved ones from uploaded photos': 'ইমুং মনুংগী মশকশিং খংদোকপা',
+    'Find the item that does not belong in the category': 'তোপ তোপ্পা খন্বা',
+    'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more': 'NER ল্যান্ডমার্ক কার্ডশিং খংদোকপা',
+    'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline': 'ইশৈগী ৱারোলশিং খংদোকপা',
+    'Arrange morning tea brewing, self-care, and garden routines in correct order': 'অয়ুক্কী থবকশিং শেম্বা',
+    'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets': 'চানবা অমদি খুৎশৈবা খন্বা',
+    'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes': 'নম্বরশিং খংদোকপা',
+    'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya': 'কুম্মৈশিং অমদি রাজ্য খংদোকপা',
+    'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)': 'রং খংদোকপা',
+    'Complete NER folk proverbs — "The bamboo that bends is stronger than..."': 'ৱাখল জ্ঞান খংদোকপা',
+    'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery': 'মফমগী মিং খংদোকপা',
+    'Memorize highlighted handloom weave cells, then replicate from memory': 'ফিগার হন্থবা',
+ // Manipuri (Meitei Mayek transliterated)
     appName: 'কোগ্নিকেয়ার NER',
     tagline: 'মেমোরি কেয়ার প্লাটফর্ম',
     patient: 'অনাবা',
@@ -291,7 +476,78 @@ const TRANSLATIONS = {
     detailLabel: 'অকুপ্পা ৱারোল',
   },
 
-  hi: { // Hindi
+  hi: {
+    'Caregiver Dashboard': 'देखभालकर्ता डैशबोर्ड',
+    'Monitor cognitive performance, track engagement trends, and receive AI-powered clinical insights.': 'संज्ञानात्मक प्रदर्शन की निगरानी करें, रुझानों को ट्रैक करें और AI-संचालित नैदानिक अंतर्दृष्टि प्राप्त करें।',
+    'Cognitive Wellness Index': 'संज्ञानात्मक कल्याण सूचकांक',
+    'Out of 100': '100 में से',
+    'AI Multi-Signal Attribution': 'AI मल्टी-सिग्नल एट्रिब्यूशन',
+    'Game Performance': 'खेल प्रदर्शन',
+    'Emotional Stability': 'भावनात्मक स्थिरता',
+    'Speech Fluency Biomarker': 'भाषण प्रवाह बायोमार्कर',
+    'Sessions This Week': 'इस सप्ताह के सत्र',
+    'Average Accuracy': 'औसत सटीकता',
+    'Avg Response Time': 'औसत प्रतिक्रिया समय',
+    'Active Streak': 'सक्रिय लकीर',
+    'Reminders Completed': 'अनुस्मारक पूर्ण',
+    'Caregiver Wellbeing': 'देखभालकर्ता कल्याण',
+    'Sundowning Pattern Detected': 'सनडाउनिंग पैटर्न का पता चला',
+    'CRITICAL': 'गंभीर',
+    'AI Recommendation:': 'AI सिफारिश:',
+    '7-Day Cognitive Performance': '7-दिन का संज्ञानात्मक प्रदर्शन',
+    'Accuracy & response time trends': 'सटीकता और प्रतिक्रिया समय के रुझान',
+    'Cognitive Digital Twin': 'संज्ञानात्मक डिजिटल ट्विन',
+    'Radar mapping of 6 brain domains (CST)': '6 मस्तिष्क डोमेन का रडार मैपिंग',
+    'Patient Mood Trend': 'रोगी के मूड का रुझान',
+    'Self-reported pre-session emotional state': 'सत्र-पूर्व भावनात्मक स्थिति',
+    'Conversational Cognitive Signal': 'संवादात्मक संज्ञानात्मक संकेत',
+    'Speech fluency biomarker from Smriti Phone': 'स्मृति फोन से भाषण प्रवाह बायोमार्कर',
+    'Recent Game Sessions': 'हाल के खेल सत्र',
+    'Detailed session history with accuracy tracking': 'सटीकता ट्रैकिंग के साथ विस्तृत सत्र इतिहास',
+    'Live Analysis': 'लाइव विश्लेषण',
+    'Accuracy': 'सटीकता',
+    'Performance': 'प्रदर्शन',
+    'Time': 'समय',
+    'Game Exercise': 'खेल अभ्यास',
+
+    'Across 8 cognitive domains': '8 संज्ञानात्मक डोमेन में',
+    'Great engagement!': 'शानदार जुड़ाव!',
+    'Try more games!': 'और खेल आजमाएं!',
+    'AI Difficulty Level': 'AI कठिनाई स्तर',
+    'Level': 'स्तर',
+    'Auto-adapted to your skill': 'आपके कौशल के अनुसार स्वतः अनुकूलित',
+    'Music Therapy': 'संगीत चिकित्सा',
+    'Family Faces': 'पारिवारिक चेहरे',
+    'Odd One Out': 'विषम को पहचानें',
+    'Therapy': 'चिकित्सा',
+    'Personal': 'व्यक्तिगत',
+    'Categorization': 'वर्गीकरण',
+    'Memory': 'स्मृति',
+    'Auditory Memory': 'श्रवण स्मृति',
+    'Executive Fn': 'कार्यकारी कार्य',
+    'Numerical': 'संख्यात्मक',
+    'Semantic Memory': 'अर्थपूर्ण स्मृति',
+    'Attention': 'ध्यान',
+    'Language': 'भाषा',
+    'Lexical': 'शाब्दिक',
+    'Visuospatial': 'दृश्य-स्थानिक',
+    'Easy': 'आसान',
+    'Medium': 'मध्यम',
+    'Hard': 'कठिन',
+    'Calming algorithmic NER folk melodies for sundowning relief': 'सूर्यास्त के समय राहत के लिए शांत NER लोक धुनें',
+    'Recognize your family members and loved ones from uploaded photos': 'अपलोड की गई तस्वीरों से अपने परिवार के सदस्यों और प्रियजनों को पहचानें',
+    'Find the item that does not belong in the category': 'उस आइटम को खोजें जो श्रेणी से संबंधित नहीं है',
+    'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more': 'NER लैंडमार्क कार्ड का मिलान करें — काजीरंगा, तवांग और अन्य के साथ दृश्य-स्थानिक स्मृति को प्रशिक्षित करता है',
+    'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline': 'ऑफ़लाइन संश्लेषित बिहू ढोल, पेपा, पुंग और बांसुरी के अनुक्रम याद करें',
+    'Arrange morning tea brewing, self-care, and garden routines in correct order': 'सुबह की चाय बनाने, आत्म-देखभाल और बगीचे की दिनचर्या को सही क्रम में व्यवस्थित करें',
+    'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets': 'भुत जोलोकिया, बांस के अंकुर, मेखेला चादर को भोजन बनाम हस्तशिल्प टोकरियों में छाँटें',
+    'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes': 'अनुक्रमों में लापता संख्याएँ खोजें — चाय की टोकरियाँ, पान के गुच्छे, ₹5 के नोट गिनें',
+    'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya': 'हॉर्नबिल महोत्सव ↔ नागालैंड, बिहू ↔ असम, रूट ब्रिज ↔ मेघालय का मिलान करें',
+    'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)': 'स्ट्रूप परीक्षण — पाठ के रंग पर टैप करें, शब्द पर नहीं (ध्यान और निषेध)',
+    'Complete NER folk proverbs — "The bamboo that bends is stronger than..."': 'NER लोक कहावतों को पूरा करें — "जो बांस झुकता है वह अधिक मजबूत होता है..."',
+    'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery': 'K_Z_R_NGA, SH_LL_NG में लापता अक्षर भरें — NER स्थान के नाम की रिकवरी',
+    'Memorize highlighted handloom weave cells, then replicate from memory': 'हाइलाइट किए गए हथकरघा बुनाई कोशिकाओं को याद करें, फिर स्मृति से दोहराएं',
+ // Hindi
     appName: 'कॉग्निकेयर NER',
     tagline: 'स्मृति देखभाल मंच',
     patient: 'रोगी',
@@ -384,7 +640,45 @@ const TRANSLATIONS = {
     detailLabel: 'विवरण',
   },
 
-  bn: { // Bengali
+  bn: {
+    'Across 8 cognitive domains': '৮টি জ্ঞানীয় ডোমেইন জুড়ে',
+    'Great engagement!': 'দারুণ অংশগ্রহণ!',
+    'Try more games!': 'আরও খেলা চেষ্টা করুন!',
+    'AI Difficulty Level': 'AI অসুবিধার স্তর',
+    'Level': 'স্তর',
+    'Auto-adapted to your skill': 'আপনার দক্ষতার সাথে স্বয়ংক্রিয়ভাবে খাপ খাইয়ে নেওয়া',
+    'Music Therapy': 'মিউজিক থেরাপি',
+    'Family Faces': 'পরিবারের মুখ',
+    'Odd One Out': 'অড ওয়ান আউট',
+    'Therapy': 'থেরাপি',
+    'Personal': 'ব্যক্তিগত',
+    'Categorization': 'শ্রেণীকরণ',
+    'Memory': 'স্মৃতি',
+    'Auditory Memory': 'শ্রবণ স্মৃতি',
+    'Executive Fn': 'নির্বাহী কাজ',
+    'Numerical': 'সাংখ্যিক',
+    'Semantic Memory': 'অর্থগত স্মৃতি',
+    'Attention': 'মনোযোগ',
+    'Language': 'ভাষা',
+    'Lexical': 'আভিধানিক',
+    'Visuospatial': 'দৃশ্য-স্থানিক',
+    'Easy': 'সহজ',
+    'Medium': 'মাঝারি',
+    'Hard': 'কঠিন',
+    'Calming algorithmic NER folk melodies for sundowning relief': 'সূর্যাস্তের সময় স্বস্তির জন্য শান্ত এন ই আর লোক সুর',
+    'Recognize your family members and loved ones from uploaded photos': 'আপলোড করা ছবি থেকে আপনার পরিবারের সদস্য এবং প্রিয়জনদের চিনুন',
+    'Find the item that does not belong in the category': 'যেই আইটেমটি শ্রেণীর অন্তর্গত নয় তা খুঁজুন',
+    'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more': 'এন ই আর ল্যান্ডমার্ক কার্ড মিলান — কাজিরাঙ্গা, তাওয়াং এবং আরও অনেক কিছুর সাথে দৃশ্য-স্থানিক স্মৃতি প্রশিক্ষণ দেয়',
+    'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline': 'অফলাইনে সংশ্লেষিত বিহু ঢোল, পেপা, পুং এবং বাঁশির ক্রম মনে করুন',
+    'Arrange morning tea brewing, self-care, and garden routines in correct order': 'সকালের চা বানানো, নিজের যত্ন নেওয়া এবং বাগানের কাজগুলি সঠিক ক্রমে সাজান',
+    'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets': 'ভুত জলোকিয়া, বাঁশের অঙ্কুর, মেখেলা চাদরকে খাবার বনাম হস্তশিল্পের ঝুড়িতে সাজান',
+    'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes': 'ক্রমগুলিতে হারিয়ে যাওয়া সংখ্যাগুলি খুঁজুন — চায়ের ঝুড়ি, পানের গুচ্ছ, ₹৫ নোট গণনা করুন',
+    'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya': 'হর্নবিল উৎসব ↔ নাগাল্যান্ড, বিহু ↔ আসাম, রুট ব্রিজ ↔ মেঘালয় মিলান',
+    'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)': 'স্ট্রুপ পরীক্ষা — শব্দের নয়, পাঠ্যের রঙে আলতো চাপুন (মনোযোগ এবং বাধা)',
+    'Complete NER folk proverbs — "The bamboo that bends is stronger than..."': 'এন ই আর লোক প্রবাদগুলি সম্পূর্ণ করুন — "যে বাঁশ বাঁকে তা আরও শক্তিশালী..."',
+    'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery': 'K_Z_R_NGA, SH_LL_NG-এ হারিয়ে যাওয়া অক্ষর পূরণ করুন — এন ই আর জায়গার নাম পুনরুদ্ধার',
+    'Memorize highlighted handloom weave cells, then replicate from memory': 'হাইলাইট করা তাঁত বোনা কোষগুলি মুখস্ত করুন, তারপর স্মৃতি থেকে প্রতিলিপি করুন',
+ // Bengali
     appName: 'কগ্নিকেয়ার NER',
     tagline: 'স্মৃতি যত্ন মঞ্চ',
     patient: 'রোগী',
@@ -477,7 +771,45 @@ const TRANSLATIONS = {
     detailLabel: 'বিবরণ',
   },
 
-  kha: { // Khasi
+  kha: {
+    'Across 8 cognitive domains': 'Across 8 cognitive domains',
+    'Great engagement!': 'Kynmaw bha!',
+    'Try more games!': 'Lehkai shuh shuh!',
+    'AI Difficulty Level': 'AI Level ban Jymma',
+    'Level': 'Level',
+    'Auto-adapted to your skill': 'Auto-adapted sha ka jinglah jong phi',
+    'Music Therapy': 'Rwai Therapy',
+    'Family Faces': 'Dur Jong Kiba Hajan',
+    'Odd One Out': 'Kaba Lait',
+    'Therapy': 'Therapy',
+    'Personal': 'Shimet',
+    'Categorization': 'Pyniakhlad',
+    'Memory': 'Kynmaw',
+    'Auditory Memory': 'Kynmaw Sngew',
+    'Executive Fn': 'Kam',
+    'Numerical': 'Dak',
+    'Semantic Memory': 'Kynmaw Mut',
+    'Attention': 'Phikir',
+    'Language': 'Ktien',
+    'Lexical': 'Ktien',
+    'Visuospatial': 'Iohi',
+    'Easy': 'Jem',
+    'Medium': 'Pdeng',
+    'Hard': 'Eh',
+    'Calming algorithmic NER folk melodies for sundowning relief': 'Calming NER folk melodies',
+    'Recognize your family members and loved ones from uploaded photos': 'Tip ia kiba hajan',
+    'Find the item that does not belong in the category': 'Wad ia kaba lait',
+    'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more': 'Match NER landmark cards',
+    'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline': 'Kynmaw sur Bihu, Pepa, Besli',
+    'Arrange morning tea brewing, self-care, and garden routines in correct order': 'Pynbeit ia ki kam mynstep',
+    'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets': 'Pyniakhlad jingbam bad tiar',
+    'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes': 'Wad ia ki dak kiba jah',
+    'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya': 'Match Hornbill, Bihu, Root Bridges',
+    'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)': 'Tap the COLOUR',
+    'Complete NER folk proverbs — "The bamboo that bends is stronger than..."': 'Complete NER folk proverbs',
+    'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery': 'Pyndap dak kiba jah',
+    'Memorize highlighted handloom weave cells, then replicate from memory': 'Kynmaw rukom thain',
+ // Khasi
     appName: 'CogniCare NER',
     tagline: 'Jingïaphaw jingmut platform',
     patient: 'U bynriew uba ïap',
@@ -570,7 +902,45 @@ const TRANSLATIONS = {
     detailLabel: 'Batai',
   },
 
-  mzo: { // Mizo
+  mzo: {
+    'Across 8 cognitive domains': 'Cognitive domain 8 ah',
+    'Great engagement!': 'I ti tha lutuk!',
+    'Try more games!': 'Game dang khel rawh!',
+    'AI Difficulty Level': 'AI Harsatna Level',
+    'Level': 'Level',
+    'Auto-adapted to your skill': 'I thiam dan azirin a in siam rem',
+    'Music Therapy': 'Hla Therapy',
+    'Family Faces': 'Chhungte Hmel',
+    'Odd One Out': 'A Danglam Zawn Chhuah',
+    'Therapy': 'Therapy',
+    'Personal': 'Mimal',
+    'Categorization': 'Thliar Hran',
+    'Memory': 'Hriatna',
+    'Auditory Memory': 'Ngaihthlak Hriatna',
+    'Executive Fn': 'Hnathawh',
+    'Numerical': 'Number',
+    'Semantic Memory': 'Awmzia Hriatna',
+    'Attention': 'Ngaihsakna',
+    'Language': 'Tawng',
+    'Lexical': 'Thumal',
+    'Visuospatial': 'Hmuh theih',
+    'Easy': 'Awlsam',
+    'Medium': 'Laihawl',
+    'Hard': 'Harsa',
+    'Calming algorithmic NER folk melodies for sundowning relief': 'Mizo hla hlui te',
+    'Recognize your family members and loved ones from uploaded photos': 'I chhungte hmel hre rawh',
+    'Find the item that does not belong in the category': 'A danglam zawn chhuah',
+    'Match NER landmark cards — trains visual-spatial memory with Kaziranga, Tawang & more': 'NER hmun pawimawh te',
+    'Recall sequences of Bihu Dhol, Pepa, Pung & Bamboo Flute synthesized offline': 'Hla ri hriat chhuah',
+    'Arrange morning tea brewing, self-care, and garden routines in correct order': 'Zingkar hun hman dan siam rem',
+    'Sort Bhut Jolokia, Bamboo Shoots, Mekhela Chador into food vs handicraft baskets': 'Ei tur leh thil siam chhuah thliar hran',
+    'Find missing numbers in sequences — counting tea baskets, betel clusters, ₹5 notes': 'Number kim lo zawn chhuah',
+    'Match Hornbill Festival ↔ Nagaland, Bihu ↔ Assam, Root Bridges ↔ Meghalaya': 'Kut leh state mil pui',
+    'Stroop test — tap the COLOUR of the text, not the word (attention & inhibition)': 'Rawng hmet rawh',
+    'Complete NER folk proverbs — "The bamboo that bends is stronger than..."': 'Mizo thufing tih famkim',
+    'Fill missing letters in K_Z_R_NGA, SH_LL_NG — NER place name recovery': 'Hmun hming a hawrawp kim lo dah luh',
+    'Memorize highlighted handloom weave cells, then replicate from memory': 'Puan tah dan chhinchhiah',
+ // Mizo
     appName: 'CogniCare NER',
     tagline: 'Hre thar platform',
     patient: 'Damlo mi',
@@ -687,13 +1057,27 @@ export const MODES = {
     '--bg-secondary': '#161B22',
     '--bg-card': '#1E232B',
     '--bg-card-hover': '#262D35',
+    '--bg-accent': '#1A2332',
     '--bg-sidebar': '#090C10',
+    '--bg-sidebar-hover': '#0D1117',
     '--text-primary': '#F0F6FC',
     '--text-secondary': '#C9D1D9',
     '--text-muted': '#8B949E',
     '--text-on-dark': '#FFFFFF',
     '--text-on-dark-muted': '#C9D1D9',
     '--border-color': '#30363D',
+    '--border-hover': 'rgba(10,126,106,0.5)',
+    '--gradient-card': 'linear-gradient(145deg, #1E232B 0%, #161B22 100%)',
+    '--gradient-hero': 'linear-gradient(160deg, #0D1117 0%, #161B22 40%, #1A2332 100%)',
+    '--gradient-warm': 'linear-gradient(135deg, #1A2332 0%, #161B22 100%)',
+    '--shadow-sm': '0 2px 8px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3)',
+    '--shadow-md': '0 4px 20px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.2)',
+    '--shadow-lg': '0 12px 40px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2)',
+    '--shadow-xl': '0 20px 60px rgba(0,0,0,0.35)',
+    '--shadow-glow': '0 0 32px rgba(10,126,106,0.3)',
+    '--shadow-card-hover': '0 16px 48px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2)',
+    '--tooltip-bg': '#1E232B',
+    '--tooltip-border': '#30363D',
   },
 };
 
@@ -796,18 +1180,44 @@ export function AppProvider({ children }) {
   // Persist speech logs
   useEffect(() => { localStorage.setItem('cogni_speech_logs', JSON.stringify(speechLogs)); }, [speechLogs]);
 
+  // --- CIRCADIAN UI ENGINE ---
+  const getCircadianMode = () => {
+    const hour = new Date().getHours();
+    if (hour >= 6 && hour < 10) return 'morning'; // 6 AM - 10 AM
+    if (hour >= 10 && hour < 16) return 'day'; // 10 AM - 4 PM
+    if (hour >= 16 && hour < 20) return 'evening'; // 4 PM - 8 PM
+    return 'night'; // 8 PM - 6 AM
+  };
+
+  const [circadianPhase, setCircadianPhase] = useState(getCircadianMode());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCircadianPhase(getCircadianMode());
+    }, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, []);
+
   // Apply theme CSS variables to :root
   useEffect(() => {
     const root = document.documentElement;
-    const modeVars = MODES[colorMode] || MODES.light;
-    const themeVars = THEMES[theme] || THEMES.green;
+    let modeVars = MODES[colorMode] || MODES.light;
+    let themeVars = THEMES[theme] || THEMES.green;
     
+    // Circadian Override — only auto-switch if user hasn't manually set dark mode
+    // Evening: warm amber theme for sundowning mitigation (if user is on light mode)
+    if (circadianPhase === 'evening' && colorMode === 'light') {
+      themeVars = THEMES.amber; // Warm tones for sundowning
+    }
+    // Night: We do NOT force dark mode — we respect user's explicit choice.
+    // The circadianPhase state is still exposed so components can react to it.
+
     // Apply theme (Accents, gradients, and light-mode tinted backgrounds)
     Object.entries(themeVars).forEach(([key, val]) => {
       if (key.startsWith('--')) root.style.setProperty(key, val);
     });
 
-    if (colorMode === 'dark') {
+    if (modeVars === MODES.dark) {
       // Overwrite backgrounds/text with dark mode vars
       Object.entries(MODES.dark).forEach(([key, val]) => {
         if (key.startsWith('--')) root.style.setProperty(key, val);
@@ -820,7 +1230,7 @@ export function AppProvider({ children }) {
         }
       });
     }
-  }, [theme, colorMode]);
+  }, [theme, colorMode, circadianPhase]);
 
   // Translation function — falls back to English key
   const t = (key) => {
@@ -888,7 +1298,8 @@ export function AppProvider({ children }) {
       t,
       gameScores, addScore, getGameScore,
       moodLogs, addMoodLog,
-      speechLogs, addSpeechLog
+      speechLogs, addSpeechLog,
+      circadianPhase
     }}>
       {children}
     </AppContext.Provider>

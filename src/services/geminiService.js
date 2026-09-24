@@ -23,7 +23,7 @@ export const streamAIResponse = async (userMessage, history = [], onChunk) => {
     return;
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:streamGenerateContent?alt=sse&key=${apiKey}`;
   
   const contents = [
     { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },

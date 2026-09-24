@@ -4,11 +4,11 @@ import { streamAIResponse } from '../services/geminiService';
 
 // ── CSS-in-JS styles ──
 const STYLES = {
-  container: { position: 'fixed', bottom: 24, right: 24, zIndex: 9999, fontFamily: "'Inter', 'Segoe UI', sans-serif" },
+  container: { position: 'fixed', bottom: 96, right: 24, zIndex: 9999, fontFamily: "'Inter', 'Segoe UI', sans-serif" },
   window: {
-    width: 370, height: 540, backgroundColor: '#fff', borderRadius: 20,
+    width: 370, height: 540, backgroundColor: 'var(--bg-secondary)', borderRadius: 20,
     boxShadow: '0 12px 40px rgba(0,0,0,0.18)', display: 'flex', flexDirection: 'column',
-    overflow: 'hidden', marginBottom: 16, animation: 'saathiFadeIn 0.25s ease-out',
+    overflow: 'hidden', marginBottom: 16, animation: 'saathiFadeIn 0.25s ease-out', border: '1px solid var(--border-color)',
   },
   header: {
     background: 'linear-gradient(135deg, #0d9488, #0f766e)', color: '#fff',
@@ -19,22 +19,22 @@ const STYLES = {
   headerTitle: { margin: 0, fontSize: '1.05rem', fontWeight: 700, letterSpacing: 0.3 },
   headerSub: { margin: 0, fontSize: '0.65rem', opacity: 0.8, fontWeight: 400 },
   closeBtn: { background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' },
-  msgArea: { flex: 1, overflowY: 'auto', padding: '16px 14px', background: '#f0fdfa', display: 'flex', flexDirection: 'column', gap: 10 },
+  msgArea: { flex: 1, overflowY: 'auto', padding: '16px 14px', background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column', gap: 10 },
   userBubble: {
     alignSelf: 'flex-end', backgroundColor: '#0d9488', color: '#fff',
     padding: '10px 14px', borderRadius: '16px 16px 4px 16px', maxWidth: '82%',
     boxShadow: '0 1px 4px rgba(0,0,0,0.08)', fontSize: '0.95rem', lineHeight: 1.45,
   },
   modelBubble: {
-    alignSelf: 'flex-start', backgroundColor: '#fff', color: '#1f2937',
+    alignSelf: 'flex-start', backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)',
     padding: '10px 14px', borderRadius: '16px 16px 16px 4px', maxWidth: '82%',
     boxShadow: '0 1px 4px rgba(0,0,0,0.06)', fontSize: '0.95rem', lineHeight: 1.45,
   },
-  thinkingDots: { alignSelf: 'flex-start', background: '#fff', padding: '10px 18px', borderRadius: 16, color: '#9ca3af', fontSize: '0.85rem' },
-  inputArea: { padding: '12px 14px', background: '#fff', borderTop: '1px solid #e5e7eb', display: 'flex', gap: 8, alignItems: 'center' },
+  thinkingDots: { alignSelf: 'flex-start', background: 'var(--bg-card)', padding: '10px 18px', borderRadius: 16, color: 'var(--text-muted)', fontSize: '0.85rem' },
+  inputArea: { padding: '12px 14px', background: 'var(--bg-secondary)', borderTop: '1px solid var(--border-color)', display: 'flex', gap: 8, alignItems: 'center' },
   textInput: {
-    flex: 1, padding: '11px 14px', borderRadius: 22, border: '1.5px solid #d1d5db',
-    outline: 'none', fontSize: '0.95rem', color: '#111', background: '#fafafa',
+    flex: 1, padding: '11px 14px', borderRadius: 22, border: '1.5px solid var(--border-color)',
+    outline: 'none', fontSize: '0.95rem', color: 'var(--text-primary)', background: 'var(--bg-card)',
     transition: 'border-color 0.2s',
   },
   sendBtn: {

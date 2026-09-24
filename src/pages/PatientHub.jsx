@@ -80,7 +80,7 @@ export default function PatientHub() {
           <p>{t('gamesSubtitle')}</p>
         </div>
         <button onClick={handleVoice} className="btn btn-outline" style={{ padding: '10px 18px', flexShrink: 0 }}>
-          <Volume2 size={18} /> Read Aloud
+          <Volume2 size={18} /> {t('readAloud')}
         </button>
       </div>
       <div className="page-content">
@@ -126,17 +126,17 @@ export default function PatientHub() {
           <div className="kpi-card teal">
             <div className="kpi-label">{t('gamesAvailable')}</div>
             <div className="kpi-value">{GAME_DEFS.length}</div>
-            <div className="kpi-change">🧠 Across 8 cognitive domains</div>
+            <div className="kpi-change">🧠 {t('Across 8 cognitive domains')}</div>
           </div>
           <div className="kpi-card green">
             <div className="kpi-label">{t('gamesPlayed')}</div>
             <div className="kpi-value">{totalPlayed}</div>
-            <div className="kpi-change"><Trophy size={14} /> {totalPlayed >= 5 ? 'Great engagement!' : 'Try more games!'}</div>
+            <div className="kpi-change"><Trophy size={14} /> {totalPlayed >= 5 ? t('Great engagement!') : t('Try more games!')}</div>
           </div>
           <div className="kpi-card purple">
-            <div className="kpi-label">AI Difficulty Level</div>
-            <div className="kpi-value">Level {difficultyLevel || 2}</div>
-            <div className="kpi-change"><Star size={14} /> Auto-adapted to your skill</div>
+            <div className="kpi-label">{t('AI Difficulty Level')}</div>
+            <div className="kpi-value">{t('Level')} {difficultyLevel || 2}</div>
+            <div className="kpi-change"><Star size={14} /> {t('Auto-adapted to your skill')}</div>
           </div>
         </div>
 
@@ -154,10 +154,10 @@ export default function PatientHub() {
                   )}
                   <span className="game-icon">{game.icon}</span>
                   <div className="game-title">{title}</div>
-                  <div className="game-desc">{game.desc}</div>
+                  <div className="game-desc">{t(game.desc)}</div>
                   <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <span className="game-domain">{game.domain}</span>
-                    <span className={`badge ${DIFFICULTY_COLORS[game.difficulty]}`} style={{ fontSize: '0.65rem' }}>{game.difficulty}</span>
+                    <span className="game-domain">{t(game.domain)}</span>
+                    <span className={`badge ${DIFFICULTY_COLORS[game.difficulty]}`} style={{ fontSize: '0.65rem' }}>{t(game.difficulty)}</span>
                     <span className="badge blue" style={{ fontSize: '0.65rem' }}><Clock size={10} /> {game.time}</span>
                   </div>
                 </div>

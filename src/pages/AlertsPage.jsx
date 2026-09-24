@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { AlertTriangle, TrendingDown, Brain, Droplets, Clock, Check, Bell, Filter } from 'lucide-react';
+import { AlertTriangle, TrendingDown, Brain, Droplets, Clock, Check, Bell, Filter, Share2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const STATIC_ALERTS = [
@@ -155,6 +155,15 @@ export default function AlertsPage() {
                   style={{ padding: '6px 14px', minHeight: 36, fontSize: '0.78rem' }}>
                   <Check size={14} /> Acknowledge
                 </button>
+                {alert.severity === 'high' && (
+                  <button className="btn btn-primary" onClick={() => {
+                    const text = encodeURIComponent(`🚨 CogniCare Alert: ${alert.title}\nPatient: ${alert.patient}\nDetails: ${alert.desc}\nAction Required: ${alert.recommendation}`);
+                    window.open(`https://wa.me/?text=${text}`, '_blank');
+                  }}
+                    style={{ padding: '6px 14px', minHeight: 36, fontSize: '0.78rem', background: '#25D366', borderColor: '#25D366' }}>
+                    <Share2 size={14} /> Notify Family
+                  </button>
+                )}
               </div>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', minWidth: 80, textAlign: 'right', whiteSpace: 'nowrap', fontWeight: 600 }}>{alert.time}</div>

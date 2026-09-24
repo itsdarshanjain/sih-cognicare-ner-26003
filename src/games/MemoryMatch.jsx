@@ -4,6 +4,7 @@ import { ArrowLeft, RotateCcw } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { playSuccess, playEncourage } from '../utils/audio';
 import { speak } from '../utils/tts';
+import { recordTelemetry } from '../utils/telemetry';
 
 const LANDMARKS = [
   { id: 'kaziranga', emoji: '🦏', name: 'Kaziranga', desc: 'Famous national park in Assam' },
@@ -33,6 +34,8 @@ export default function MemoryMatch() {
   const [matched, setMatched] = useState(new Set());
   const [moves, setMoves] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
+  const [lastTapTime, setLastTapTime] = useState(Date.now());
+  const [hesitationCount, setHesitationCount] = useState(0);
 
   useEffect(() => {
     const selected = LANDMARKS.slice(0, 6);
@@ -43,6 +46,15 @@ export default function MemoryMatch() {
 
   const handleFlip = (idx) => {
     if (flipped.length === 2 || flipped.includes(idx) || matched.has(cards[idx].id)) return;
+    
+    // Telemetry logic
+    const now = Date.now();
+    const latency = now - lastTapTime;
+    let newHesitation = hesitationCount;
+    if (latency > 3000) newHesitation += 1;
+    setLastTapTime(now);
+    setHesitationCount(newHesitation);
+    
     const newFlipped = [...flipped, idx];
     setFlipped(newFlipped);
 
@@ -60,6 +72,7 @@ export default function MemoryMatch() {
           setTimeout(() => {
             setGameComplete(true);
             addScore('Landmark Memory', 6, 6, moves * 2000);
+            recordTelemetry('MemoryMatch', { latencyAvg: (Date.now() - (lastTapTime - (moves * 1500))) / moves, hesitationCount: newHesitation });
             speak(t('gameComplete'), language);
           }, 800);
         }

@@ -73,7 +73,7 @@ export default function MmseOnboarding({ onComplete }) {
               <button 
                 key={i} 
                 onClick={() => handleAnswer(opt)}
-                style={{ padding: 16, borderRadius: 12, border: '2px solid var(--accent-teal-light)', background: '#fff', fontSize: '1.05rem', cursor: 'pointer', transition: 'all 0.2s', color: '#222', fontWeight: 600 }}
+                style={{ padding: 16, borderRadius: 12, border: '2px solid var(--accent-teal-light)', background: 'var(--bg-card)', fontSize: '1.05rem', cursor: 'pointer', transition: 'all 0.2s', color: 'var(--text-primary)', fontWeight: 600 }}
                 onMouseOver={(e) => { e.currentTarget.style.background = 'var(--accent-teal-light)'; e.currentTarget.style.borderColor = 'var(--accent-teal)'; }}
                 onMouseOut={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = 'var(--accent-teal-light)'; }}
               >

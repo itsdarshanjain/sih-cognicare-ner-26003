@@ -10,6 +10,7 @@ import PatientHub from './pages/PatientHub';
 import Reminders from './pages/Reminders';
 import CaregiverDashboard from './pages/CaregiverDashboard';
 import PatientProfiles from './pages/PatientProfiles';
+import VoiceAssistant from './components/VoiceAssistant';
 import AlertsPage from './pages/AlertsPage';
 import SmritiPhone from './pages/SmritiPhone';
 
@@ -174,6 +175,7 @@ function AppLayout({ children, portalType }) {
         {children}
         <SmritiSaathiWidget />
         {portalType === 'patient' && <EmergencySOS />}
+        <VoiceAssistant />
         <footer className="app-footer">
           <div className="footer-content">
             <div className="footer-brand"><Heart size={14} /> {t('appName')}</div>
@@ -181,6 +183,21 @@ function AppLayout({ children, portalType }) {
           </div>
         </footer>
       </div>
+
+      {/* Bottom Navigation for Mobile */}
+      <nav className="bottom-nav">
+        {nav.map(item => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.path === '/patient' || item.path === '/caregiver'}
+            className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <span className="bottom-nav-icon">{item.icon}</span>
+            <span className="bottom-nav-label">{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
     </div>
   );
 }

@@ -164,6 +164,7 @@ export default function Landing() {
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)'; e.currentTarget.style.boxShadow = '0 18px 48px rgba(10,126,106,0.35)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 10px 32px rgba(10,126,106,0.28)'; }}
+              onClick={() => navigator.vibrate && navigator.vibrate(50)}
             >
               <Gamepad2 size={26} />
               <div style={{ textAlign: 'left' }}>
@@ -176,7 +177,7 @@ export default function Landing() {
               display: 'flex', alignItems: 'center', gap: 16,
               padding: '20px 36px',
               borderRadius: 20,
-              background: 'white',
+              background: 'var(--bg-card)',
               color: 'var(--accent-teal)',
               textDecoration: 'none',
               fontSize: '1.05rem', fontWeight: 700,
@@ -187,6 +188,7 @@ export default function Landing() {
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)'; e.currentTarget.style.borderColor = 'var(--accent-teal)'; e.currentTarget.style.boxShadow = '0 18px 48px rgba(10,60,40,0.12)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.borderColor = 'rgba(10,126,106,0.12)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(10,60,40,0.07)'; }}
+              onClick={() => navigator.vibrate && navigator.vibrate(50)}
             >
               <BarChart3 size={26} />
               <div style={{ textAlign: 'left' }}>
@@ -201,7 +203,7 @@ export default function Landing() {
             <button onClick={handleVoiceWelcome} style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               padding: '10px 24px',
-              background: 'rgba(255,255,255,0.6)',
+              background: 'var(--accent-teal-light)',
               border: '1px solid rgba(10,126,106,0.12)',
               borderRadius: 999,
               cursor: 'pointer',
@@ -377,6 +379,7 @@ export default function Landing() {
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ''; }}
+              onClick={() => navigator.vibrate && navigator.vibrate(50)}
             >
               <Gamepad2 size={22} /> {t('enterPatient')}
             </Link>
@@ -390,6 +393,7 @@ export default function Landing() {
             }}
               onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.14)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = ''; }}
+              onClick={() => navigator.vibrate && navigator.vibrate(50)}
             >
               <BarChart3 size={22} /> {t('enterCaregiver')}
             </Link>

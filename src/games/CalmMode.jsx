@@ -8,10 +8,12 @@ export default function CalmMode() {
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const [station, setStation] = useState(1); // 1: NER Folk, 2: Classical Drone, 3: Nature
+  const [gammaEnabled, setGammaEnabled] = useState(true);
   
   const audioCtxRef = useRef(null);
   const oscillatorsRef = useRef([]);
   const gainNodeRef = useRef(null);
+  const gammaNodesRef = useRef([]);
 
   const STATIONS = [
     { id: 1, name: 'NER Folk Flute', icon: <Music size={18} />, color: '#1D9B5F', freqs: [261.63, 293.66, 329.63, 392.00, 440.00] }, // C, D, E, G, A
@@ -19,13 +21,14 @@ export default function CalmMode() {
     { id: 3, name: 'Nature Rain', icon: <Wind size={18} />, color: '#2980B9', isNoise: true }
   ];
 
-  const startTherapy = (stationId) => {
-    if (isPlaying) stopTherapy();
-    
-    if (!audioCtxRef.current) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioCtxRef.current = new AudioContext();
+  const startTherapy = async (stationId) => {
+    if (audioCtxRef.current) {
+      await audioCtxRef.current.close();
+      audioCtxRef.current = null;
     }
+    
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtxRef.current = new AudioContext();
     const ctx = audioCtxRef.current;
     
     // Master volume
@@ -47,7 +50,7 @@ export default function CalmMode() {
         let white = Math.random() * 2 - 1;
         output[i] = (lastOut + (0.02 * white)) / 1.02;
         lastOut = output[i];
-        output[i] *= 3.5; // Compensate for low volume
+        output[i] *= 6.5; // Compensate for low volume
       }
       const noiseNode = ctx.createBufferSource();
       noiseNode.buffer = noiseBuffer;
@@ -80,15 +83,16 @@ export default function CalmMode() {
         const noteOsc = ctx.createOscillator();
         const noteGain = ctx.createGain();
         
-        noteOsc.type = stationId === 1 ? 'triangle' : 'sine';
+        noteOsc.type = 'triangle';
         
         // Random note from station scale
         const f = currentStation.freqs[Math.floor(Math.random() * currentStation.freqs.length)];
         noteOsc.frequency.value = f;
         
-        // Envelopes for smooth attacks
+        // Envelopes for smooth attacks - Station 2 gets higher volume because it's lower frequency
+        const peakVol = stationId === 1 ? 0.25 : 0.45;
         noteGain.gain.setValueAtTime(0, time);
-        noteGain.gain.linearRampToValueAtTime(0.15, time + (stationId === 1 ? 0.5 : 1.5));
+        noteGain.gain.linearRampToValueAtTime(peakVol, time + (stationId === 1 ? 0.5 : 1.5));
         noteGain.gain.linearRampToValueAtTime(0, time + (stationId === 1 ? 2 : 4));
         
         noteOsc.connect(noteGain);
@@ -102,23 +106,49 @@ export default function CalmMode() {
       }
     }
     
+    // Add 40Hz Gamma Binaural Beats (200Hz Left, 240Hz Right)
+    if (gammaEnabled) {
+      const merger = ctx.createChannelMerger(2);
+      
+      const leftOsc = ctx.createOscillator();
+      leftOsc.type = 'sine';
+      leftOsc.frequency.value = 200;
+      
+      const rightOsc = ctx.createOscillator();
+      rightOsc.type = 'sine';
+      rightOsc.frequency.value = 240;
+      
+      const gammaGain = ctx.createGain();
+      gammaGain.gain.setValueAtTime(0, ctx.currentTime);
+      gammaGain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 4); // low volume
+      
+      leftOsc.connect(merger, 0, 0); // connect to left
+      rightOsc.connect(merger, 0, 1); // connect to right
+      
+      merger.connect(gammaGain);
+      gammaGain.connect(ctx.destination);
+      
+      leftOsc.start();
+      rightOsc.start();
+      
+      gammaNodesRef.current = [leftOsc, rightOsc, gammaGain];
+    }
+    
     setStation(stationId);
     setIsPlaying(true);
   };
 
-  const stopTherapy = () => {
-    if (gainNodeRef.current && audioCtxRef.current) {
-      const ctx = audioCtxRef.current;
-      // Fade out
-      gainNodeRef.current.gain.linearRampToValueAtTime(0, ctx.currentTime + 2);
-      setTimeout(() => {
-        oscillatorsRef.current.forEach(osc => {
-          try { osc.stop(); } catch (e) { /* ignore already stopped */ }
-        });
-        oscillatorsRef.current = [];
-        setIsPlaying(false);
-      }, 2000);
+  const stopTherapy = async () => {
+    if (audioCtxRef.current) {
+      try {
+        await audioCtxRef.current.close();
+      } catch (e) {}
+      audioCtxRef.current = null;
     }
+    oscillatorsRef.current = [];
+    gammaNodesRef.current = [];
+    gainNodeRef.current = null;
+    setIsPlaying(false);
   };
 
   useEffect(() => {
@@ -133,9 +163,29 @@ export default function CalmMode() {
         <button onClick={() => navigate('/patient')} className="btn btn-outline" style={{ minWidth: 48, padding: 12 }}>
           <ArrowLeft size={20} />
         </button>
-        <div>
-          <h2>📻 Smriti Radio</h2>
-          <p>Nostalgic algorithmic music therapy for calming and sundowning relief.</p>
+        <div style={{ flex: 1 }}>
+          <h2>📻 {t('radioTitle')}</h2>
+          <p>{t('radioDesc')}</p>
+        </div>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(29, 155, 95, 0.1)', padding: '10px 16px', borderRadius: 12, border: '1px solid rgba(29,155,95,0.3)'
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#1D9B5F' }}>{t('gammaTherapy')}</span>
+            <span style={{ fontSize: '0.65rem', color: '#4A6E55' }}>{t('gammaDesc')}</span>
+          </div>
+          <button 
+            onClick={() => setGammaEnabled(!gammaEnabled)}
+            style={{
+              width: 44, height: 24, borderRadius: 12, background: gammaEnabled ? '#1D9B5F' : '#ccc',
+              position: 'relative', border: 'none', cursor: 'pointer', transition: '0.3s'
+            }}
+          >
+            <div style={{
+              width: 20, height: 20, borderRadius: '50%', background: '#fff',
+              position: 'absolute', top: 2, left: gammaEnabled ? 22 : 2, transition: '0.3s'
+            }} />
+          </button>
         </div>
       </div>
       

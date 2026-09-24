@@ -15,31 +15,46 @@ function getBestVoice(langCode) {
   const voices = window.speechSynthesis.getVoices();
   const entry = LANG_MAP[langCode] || LANG_MAP.en;
 
-  // Try exact match first
-  let voice = voices.find(v => v.lang === entry.lang);
-  if (voice) return { voice, lang: entry.lang };
+  // Helper to pick the most "human-like" cloud voice
+  const pickBest = (voiceList) => {
+    if (!voiceList.length) return null;
+    // Prefer Google/Network voices which use high-quality neural models (Wavenet) rather than robotic local OS voices
+    const premium = voiceList.find(v => v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Premium'));
+    return premium || voiceList[0];
+  };
 
-  // Try language prefix (e.g. 'hi' for 'hi-IN')
+  const exactMatches = voices.filter(v => v.lang === entry.lang);
+  let best = pickBest(exactMatches);
+  if (best) return { voice: best, lang: entry.lang };
+
   const prefix = entry.lang.split('-')[0];
-  voice = voices.find(v => v.lang.startsWith(prefix));
-  if (voice) return { voice, lang: voice.lang };
+  const prefixMatches = voices.filter(v => v.lang.startsWith(prefix));
+  best = pickBest(prefixMatches);
+  if (best) return { voice: best, lang: best.lang };
 
-  // Try fallback
-  voice = voices.find(v => v.lang === entry.fallback);
-  if (voice) return { voice, lang: entry.fallback };
+  const fallbackMatches = voices.filter(v => v.lang === entry.fallback);
+  best = pickBest(fallbackMatches);
+  if (best) return { voice: best, lang: entry.fallback };
 
-  // Default
-  return { voice: null, lang: 'en-IN' };
+  // Default super fallback
+  const anyGoogle = voices.find(v => v.name.includes('Google US English') || v.name.includes('Google UK English Female'));
+  return { voice: anyGoogle || null, lang: 'en-IN' };
 }
 
-export function speak(text, langCode = 'en') {
-  if (!window.speechSynthesis) return;
+export function speak(text, langCode = 'en', onEnd = null) {
+  if (!window.speechSynthesis) { if (onEnd) onEnd(); return; }
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate   = 0.82;  // Deliberately slow — elderly processing speed
   utterance.pitch  = 1.0;
   utterance.volume = 1.0;
+
+  // Fire callback when speech ends
+  if (onEnd) {
+    utterance.onend = onEnd;
+    utterance.onerror = onEnd;
+  }
 
   // Voices load async — wait for them if not yet available
   const trySpeak = () => {

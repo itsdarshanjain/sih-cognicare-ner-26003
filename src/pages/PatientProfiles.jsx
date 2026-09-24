@@ -23,7 +23,11 @@ export default function PatientProfiles() {
           <h2>👤 Patient Profiles</h2>
           <p>Manage patient records, view cognitive trends, and customize care plans.</p>
         </div>
-        <button className="btn btn-primary" style={{ padding: '12px 24px' }}>
+        <button 
+          className="btn btn-primary" 
+          style={{ padding: '12px 24px' }}
+          onClick={() => alert("Mockup feature: In production, this will sync with the e-Sanjeevani Ministry of Health API to securely onboard new patients via ABHA ID.")}
+        >
           <Plus size={18} /> Add Patient
         </button>
       </div>
@@ -92,7 +96,7 @@ export default function PatientProfiles() {
                   <BarChart data={p.weekData}>
                     <XAxis dataKey="d" tick={{ fill: 'var(--text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} />
                     <YAxis domain={[40, 100]} hide />
-                    <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 10, fontSize: 12 }} />
+                    <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 10, fontSize: 12, color: 'var(--text-primary)' }} />
                     <Bar dataKey="s" fill={p.trend === 'up' ? '#1D9B5F' : '#C9930B'} radius={[6, 6, 0, 0]} name="Accuracy %" />
                   </BarChart>
                 </ResponsiveContainer>

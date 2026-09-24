@@ -36,36 +36,34 @@ export default function EmergencySOS() {
       console.error("Audio API not supported", e);
     }
 
-    // Auto-dismiss after 8 seconds
+    // Auto-dismiss after 15 seconds
     setTimeout(() => {
       setActivated(false);
-    }, 8000);
+    }, 15000);
+  };
+
+  const triggerSMSFallback = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          window.open(`sms:+919876543210?body=EMERGENCY: Patient needs help. Location: https://maps.google.com/?q=${lat},${lon}`);
+        },
+        () => {
+          window.open(`sms:+919876543210?body=EMERGENCY: Patient needs help.`);
+        }
+      );
+    } else {
+      window.open(`sms:+919876543210?body=EMERGENCY: Patient needs help.`);
+    }
   };
 
   return (
     <>
       <button 
+        className="sos-btn"
         onClick={handleSOS}
-        style={{
-          position: 'fixed',
-          bottom: 24,
-          left: 310, // Safely right of the 280px sidebar
-          width: 60,
-          height: 60,
-          borderRadius: '50%',
-          background: 'var(--accent-red, #E53935)',
-          color: 'white',
-          border: 'none',
-          boxShadow: '0 4px 12px rgba(229, 57, 53, 0.4)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          zIndex: 9999,
-          transition: 'transform 0.2s'
-        }}
-        onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
-        onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
         title="Emergency Help"
       >
         <HeartPulse size={28} />
@@ -110,22 +108,39 @@ export default function EmergencySOS() {
             {t('notifyingCaregiver') || 'Notifying Caregiver...'}
           </p>
           
-          <button 
-            onClick={() => setActivated(false)}
-            style={{
-              marginTop: 40,
-              padding: '16px 32px',
-              borderRadius: 30,
-              border: '2px solid white',
-              background: 'transparent',
-              color: 'white',
-              fontSize: '1.2rem',
-              cursor: 'pointer',
-              fontWeight: 'bold'
-            }}
-          >
-            {t('cancel') || 'Cancel Alert'}
-          </button>
+          <div style={{ display: 'flex', gap: 16, marginTop: 40 }}>
+            <button 
+              onClick={() => setActivated(false)}
+              style={{
+                padding: '16px 32px',
+                borderRadius: 30,
+                border: '2px solid white',
+                background: 'transparent',
+                color: 'white',
+                fontSize: '1.2rem',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              {t('cancel') || 'Cancel Alert'}
+            </button>
+            <button 
+              onClick={triggerSMSFallback}
+              style={{
+                padding: '16px 32px',
+                borderRadius: 30,
+                border: 'none',
+                background: 'white',
+                color: 'var(--accent-red, #E53935)',
+                fontSize: '1.2rem',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+              }}
+            >
+              Send SMS SOS
+            </button>
+          </div>
         </div>
       )}
     </>

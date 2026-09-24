@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, Legend, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import { TrendingUp, Clock, Target, Flame, AlertTriangle, Brain, Calendar, Download, Users, Activity, Volume2, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { speak } from '../utils/tts';
@@ -110,7 +110,7 @@ export default function CaregiverDashboard() {
   const CustomMoodTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div style={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, padding: 12, fontSize: 13, boxShadow: 'var(--shadow-md)' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, padding: 12, fontSize: 13, boxShadow: 'var(--shadow-md)', color: 'var(--text-primary)' }}>
           <p style={{ margin: 0, fontWeight: 'bold' }}>{payload[0].payload.day}</p>
           <p style={{ margin: 0, fontSize: '1.2rem' }}>Mood: {payload[0].payload.label}</p>
         </div>
@@ -164,8 +164,8 @@ export default function CaregiverDashboard() {
       <CaregiverBurnout isVisible={isBurnoutModalOpen} onClose={() => setIsBurnoutModalOpen(false)} />
       <div className="page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h2>📊 Caregiver Dashboard</h2>
-          <p>Monitor cognitive performance, track engagement trends, and receive AI-powered clinical insights.</p>
+          <h2>📊 {t('Caregiver Dashboard')}</h2>
+          <p>{t('Monitor cognitive performance, track engagement trends, and receive AI-powered clinical insights.')}</p>
         </div>
         <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
           <button onClick={() => window.print()} className="btn btn-outline" title="Export Clinical Report" style={{ padding: '10px 16px' }} data-no-print="true">
@@ -197,16 +197,16 @@ export default function CaregiverDashboard() {
           boxShadow: 'var(--shadow-sm)'
         }}>
           <div style={{ flexShrink: 0, textAlign: 'center' }}>
-            <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 8 }}>Cognitive Wellness Index</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 8 }}>{t('Cognitive Wellness Index')}</div>
             <div style={{ fontSize: '4.5rem', fontWeight: 800, color: cwiColor, lineHeight: 1 }}>{CWI}</div>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: 4 }}>Out of 100</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: 4 }}>{t('Out of 100')}</div>
           </div>
           <div style={{ flex: 1, minWidth: 300 }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--text-primary)', fontSize: '1.1rem' }}>AI Multi-Signal Attribution</h4>
+            <h4 style={{ margin: '0 0 16px 0', color: 'var(--text-primary)', fontSize: '1.1rem' }}>{t('AI Multi-Signal Attribution')}</h4>
             
             <div style={{ marginBottom: 12 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 6 }}>
-                <span style={{ color: 'var(--text-secondary)' }}>🎮 Game Performance (50%)</span>
+                <span style={{ color: 'var(--text-secondary)' }}>🎮 {t('Game Performance')} (50%)</span>
                 <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{Math.round(gameAvg)}/100 → +{Math.round(gameAvg * 0.5)} pts</span>
               </div>
               <div style={{ width: '100%', height: 6, background: 'var(--accent-teal-light)', borderRadius: 4 }}>
@@ -216,7 +216,7 @@ export default function CaregiverDashboard() {
 
             <div style={{ marginBottom: 12 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 6 }}>
-                <span style={{ color: 'var(--text-secondary)' }}>🎭 Emotional Stability (25%)</span>
+                <span style={{ color: 'var(--text-secondary)' }}>🎭 {t('Emotional Stability')} (25%)</span>
                 <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{Math.round(moodAvg)}/100 → +{Math.round(moodAvg * 0.25)} pts</span>
               </div>
               <div style={{ width: '100%', height: 6, background: 'rgba(196,122,0,0.1)', borderRadius: 4 }}>
@@ -226,7 +226,7 @@ export default function CaregiverDashboard() {
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 6 }}>
-                <span style={{ color: 'var(--text-secondary)' }}>🎙️ Speech Fluency Biomarker (25%)</span>
+                <span style={{ color: 'var(--text-secondary)' }}>🎙️ {t('Speech Fluency Biomarker')} (25%)</span>
                 <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{Math.round(speechAvg)}/100 → +{Math.round(speechAvg * 0.25)} pts</span>
               </div>
               <div style={{ width: '100%', height: 6, background: 'rgba(124,58,237,0.1)', borderRadius: 4 }}>
@@ -240,32 +240,32 @@ export default function CaregiverDashboard() {
         {/* KPI Cards */}
         <div className="kpi-grid">
           <div className="kpi-card teal">
-            <div className="kpi-label">Sessions This Week</div>
+            <div className="kpi-label">{t('Sessions This Week')}</div>
             <div className="kpi-value">{totalSessions}</div>
             <div className="kpi-change" style={{ color: 'var(--accent-green)' }}><TrendingUp size={14} /> +12% from last week</div>
           </div>
           <div className="kpi-card green">
-            <div className="kpi-label">Average Accuracy</div>
+            <div className="kpi-label">{t('Average Accuracy')}</div>
             <div className="kpi-value">{avgAccuracy}%</div>
             <div className="kpi-change"><Target size={14} /> Above clinical threshold (70%)</div>
           </div>
           <div className="kpi-card amber">
-            <div className="kpi-label">Avg Response Time</div>
+            <div className="kpi-label">{t('Avg Response Time')}</div>
             <div className="kpi-value">4.2s</div>
             <div className="kpi-change"><Clock size={14} /> Normal for mild MCI</div>
           </div>
           <div className="kpi-card purple">
-            <div className="kpi-label">Active Streak</div>
+            <div className="kpi-label">{t('Active Streak')}</div>
             <div className="kpi-value">5 days</div>
             <div className="kpi-change"><Flame size={14} /> Personal best!</div>
           </div>
           <div className="kpi-card blue">
-            <div className="kpi-label">Reminders Completed</div>
+            <div className="kpi-label">{t('Reminders Completed')}</div>
             <div className="kpi-value">87%</div>
             <div className="kpi-change"><Calendar size={14} /> Medicine adherence strong</div>
           </div>
           <div className="kpi-card purple" style={{ border: burnoutLevel === 'High Risk' ? '2px solid var(--accent-amber)' : 'none' }}>
-            <div className="kpi-label">Caregiver Wellbeing</div>
+            <div className="kpi-label">{t('Caregiver Wellbeing')}</div>
             <div className="kpi-value" style={{ fontSize: '1.4rem' }}>{burnoutLevel}</div>
             <div className="kpi-change">
               {burnoutLevel === 'High Risk' ? '⚠️ Take a break. See resources.' : '💚 You are doing great!'}
@@ -280,14 +280,14 @@ export default function CaregiverDashboard() {
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-              <span style={{ fontWeight: 800, color: 'var(--text-primary)', fontSize: '1rem' }}>⚠️ Sundowning Pattern Detected</span>
-              <span className="badge red">CRITICAL</span>
+              <span style={{ fontWeight: 800, color: 'var(--text-primary)', fontSize: '1rem' }}>⚠️ {t('Sundowning Pattern Detected')}</span>
+              <span className="badge red">{t('CRITICAL')}</span>
             </div>
             <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
               Evening response times have increased by <strong>35%</strong> over the past 3 days (4:00 PM – 7:00 PM window) for patient <strong>Padma Devi Bora</strong>. This pattern is consistent with <strong>Sundowning Syndrome</strong>, common in moderate dementia.
             </div>
             <div style={{ marginTop: 12, padding: '12px 16px', background: 'rgba(10,126,106,0.06)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(10,126,106,0.1)' }}>
-              <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--accent-teal)', marginBottom: 4 }}>💡 AI Recommendation:</div>
+              <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--accent-teal)', marginBottom: 4 }}>💡 {t('AI Recommendation:')}</div>
               <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Schedule all cognitive exercises before 3 PM. Introduce 15-min calming music therapy (Bamboo Flute or Pepa) in the evening window. Consider reducing game complexity after 2 PM.</div>
             </div>
           </div>
@@ -298,8 +298,8 @@ export default function CaregiverDashboard() {
           <div className="chart-card">
             <div className="card-header">
               <div>
-                <div className="card-title">7-Day Cognitive Performance</div>
-                <div className="card-subtitle">Accuracy & response time trends</div>
+                <div className="card-title">{t('7-Day Cognitive Performance')}</div>
+                <div className="card-subtitle">{t('Accuracy & response time trends')}</div>
               </div>
               <span className="badge teal live">LIVE</span>
             </div>
@@ -314,7 +314,7 @@ export default function CaregiverDashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="day" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 600 }} />
                 <YAxis domain={[50, 100]} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
-                <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13, boxShadow: 'var(--shadow-md)' }} />
+                <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13, boxShadow: 'var(--shadow-md)', color: 'var(--text-primary)' }} />
                 <Area type="monotone" dataKey="accuracy" stroke="#0A7E6A" fill="url(#gradAccuracy)" strokeWidth={3} name="Accuracy %" dot={{ fill: '#0A7E6A', r: 5 }} activeDot={{ r: 7, stroke: '#fff', strokeWidth: 2 }} />
               </AreaChart>
             </ResponsiveContainer>
@@ -323,21 +323,19 @@ export default function CaregiverDashboard() {
           <div className="chart-card">
             <div className="card-header">
               <div>
-                <div className="card-title">Cognitive Domain Breakdown</div>
-                <div className="card-subtitle">Performance by cognitive area (CST mapping)</div>
+                <div className="card-title">{t('Cognitive Digital Twin')}</div>
+                <div className="card-subtitle">{t('Radar mapping of 6 brain domains (CST)')}</div>
               </div>
               <span className="badge green">AI ANALYSIS</span>
             </div>
             <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={domainData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                <XAxis dataKey="domain" tick={{ fill: 'var(--text-muted)', fontSize: 11, fontWeight: 600 }} />
-                <YAxis domain={[0, 100]} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
-                <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13, boxShadow: 'var(--shadow-md)' }} />
-                <Bar dataKey="score" radius={[8, 8, 0, 0]} name="Score %">
-                  {domainData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
-                </Bar>
-              </BarChart>
+              <RadarChart cx="50%" cy="50%" outerRadius="75%" data={domainData}>
+                <PolarGrid stroke="var(--border-color)" />
+                <PolarAngleAxis dataKey="domain" tick={{ fill: 'var(--text-muted)', fontSize: 11, fontWeight: 600 }} />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                <Radar name="Cognitive Score" dataKey="score" stroke="var(--accent-teal)" fill="var(--accent-teal)" fillOpacity={0.4} />
+                <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13, boxShadow: 'var(--shadow-md)', color: 'var(--text-primary)' }} />
+              </RadarChart>
             </ResponsiveContainer>
           </div>
         </div>
@@ -347,8 +345,8 @@ export default function CaregiverDashboard() {
           <div className="chart-card">
             <div className="card-header">
               <div>
-                <div className="card-title">Patient Mood Trend</div>
-                <div className="card-subtitle">Self-reported pre-session emotional state</div>
+                <div className="card-title">{t('Patient Mood Trend')}</div>
+                <div className="card-subtitle">{t('Self-reported pre-session emotional state')}</div>
               </div>
               <span className="badge amber">CLINICAL</span>
             </div>
@@ -373,8 +371,8 @@ export default function CaregiverDashboard() {
           <div className="chart-card">
             <div className="card-header">
               <div>
-                <div className="card-title">Conversational Cognitive Signal</div>
-                <div className="card-subtitle">Speech fluency biomarker from Smriti Phone</div>
+                <div className="card-title">{t('Conversational Cognitive Signal')}</div>
+                <div className="card-subtitle">{t('Speech fluency biomarker from Smriti Phone')}</div>
               </div>
               <span className="badge purple">PASSIVE AI</span>
             </div>
@@ -383,7 +381,7 @@ export default function CaregiverDashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
                 <XAxis dataKey="day" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 600 }} />
                 <YAxis domain={[0, 100]} hide />
-                <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13, boxShadow: 'var(--shadow-md)' }} />
+                <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, fontSize: 13, boxShadow: 'var(--shadow-md)', color: 'var(--text-primary)' }} />
                 <Line 
                   type="monotone" 
                   dataKey="fluencyScore" 
@@ -398,22 +396,21 @@ export default function CaregiverDashboard() {
           </div>
         </div>
 
-        {/* Recent Activity */}
         <div className="card" style={{ animation: 'fadeInUp 0.5s ease-out 0.3s backwards' }}>
           <div className="card-header">
             <div>
-              <div className="card-title">Recent Game Sessions</div>
-              <div className="card-subtitle">Detailed session history with accuracy tracking</div>
+              <div className="card-title">{t('Recent Game Sessions')}</div>
+              <div className="card-subtitle">{t('Detailed session history with accuracy tracking')}</div>
             </div>
             <span className="badge teal">{recentActivity.length} sessions</span>
           </div>
           <table className="data-table">
             <thead>
               <tr>
-                <th>Game Exercise</th>
-                <th>Accuracy</th>
-                <th>Performance</th>
-                <th>Time</th>
+                <th>{t('Game Exercise')}</th>
+                <th>{t('Accuracy')}</th>
+                <th>{t('Performance')}</th>
+                <th>{t('Time')}</th>
               </tr>
             </thead>
             <tbody>
