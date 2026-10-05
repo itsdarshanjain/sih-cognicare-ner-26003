@@ -12,7 +12,7 @@
 
   <br />
 
-  Team Prakalp (130019) &nbsp;|&nbsp; PS ID: SIH26003 &nbsp;|&nbsp; Institute of Engineering & Science, IPS Academy, Indore
+  Team Prakalp &nbsp;|&nbsp; PS ID: SIH26003 &nbsp;|&nbsp; Institute of Engineering & Science, IPS Academy, Indore
 
   <br />
 
