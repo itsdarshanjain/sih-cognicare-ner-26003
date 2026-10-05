@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/SIH_2026-Grand_Finale-0D9488?style=for-the-badge&logo=codeforces" alt="SIH 2026" />
+  <img src="https://img.shields.io/badge/SIH_2026-Team_Prakalp-0D9488?style=for-the-badge&logo=codeforces" alt="SIH 2026" />
   <img src="https://img.shields.io/badge/Ministry-MDoNER-10B981?style=for-the-badge" alt="MDoNER" />
   <img src="https://img.shields.io/badge/Theme-MedTech-8B5CF6?style=for-the-badge" alt="MedTech" />
 
