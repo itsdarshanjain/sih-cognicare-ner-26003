@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="https://img.shields.io/badge/SIH_2026-Grand_Finale-0D6E6E?style=for-the-badge&logo=bookstack&logoColor=white" />
+  <img src="https://img.shields.io/badge/SIH_2026-Team_Prakalp-0D6E6E?style=for-the-badge&logo=bookstack&logoColor=white" />
   <img src="https://img.shields.io/badge/MDoNER-Government_of_India-138808?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Theme-MedTech_%2F_HealthTech-8B5CF6?style=for-the-badge" />
 
