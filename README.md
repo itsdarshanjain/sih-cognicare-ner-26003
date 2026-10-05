@@ -16,7 +16,7 @@
 
   <br />
 
-  [▶️ Watch Demo Video](https://youtu.be/oJeZkT_caJ8) &nbsp;&nbsp;•&nbsp;&nbsp; [📄 Detailed Technical Report (PDF)](https://drive.google.com/file/d/1kiV3j_th__DyrfPFjOVzJPc28LvrDt_Q/view) &nbsp;&nbsp;•&nbsp;&nbsp; [🚀 Live Deployment](https://sih-cognicare-ner-26003.vercel.app)
+  [▶️ Watch Demo Video](https://youtu.be/oJeZkT_caJ8) &nbsp;&nbsp;•&nbsp;&nbsp; [📄 Detailed Technical Report (PDF)](https://drive.google.com/file/d/1kiV3j_th__DyrfPFjOVzJPc28LvrDt_Q/view) &nbsp;&nbsp;•&nbsp;&nbsp; [🚀 Live Deployment](https://cognicare-five.vercel.app/)
 
 </div>
 
