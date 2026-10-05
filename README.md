@@ -1,106 +1,174 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/SIH_2026-Team_Prakalp-0D9488?style=for-the-badge&logo=codeforces" alt="SIH 2026" />
-  <img src="https://img.shields.io/badge/Ministry-MDoNER-10B981?style=for-the-badge" alt="MDoNER" />
-  <img src="https://img.shields.io/badge/Theme-MedTech-8B5CF6?style=for-the-badge" alt="MedTech" />
 
-  <h1>🧠 CogniCare NER</h1>
-  <h3>AI-Based Cognitive Gaming & Memory Assistance for Elderly Dementia</h3>
-  <p><b>Team Prakalp (130019) | Problem Statement: SIH26003</b></p>
+  <img src="https://img.shields.io/badge/SIH_2026-Grand_Finale-0D6E6E?style=for-the-badge&logo=bookstack&logoColor=white" />
+  <img src="https://img.shields.io/badge/MDoNER-Government_of_India-138808?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Theme-MedTech_%2F_HealthTech-8B5CF6?style=for-the-badge" />
+
+  <br /><br />
+
+  # 🧠 CogniCare NER
+
+  **AI-Based Cognitive Gaming & Memory Assistance Platform for Elderly Dementia Patients in the North Eastern Region**
+
+  <br />
+
+  Team Prakalp (130019) &nbsp;|&nbsp; PS ID: SIH26003 &nbsp;|&nbsp; Institute of Engineering & Science, IPS Academy, Indore
+
+  <br />
+
+  [▶️ Watch Demo Video](https://youtu.be/oJeZkT_caJ8) &nbsp;&nbsp;•&nbsp;&nbsp; [📄 Detailed Technical Report (PDF)](https://drive.google.com/file/d/1kiV3j_th__DyrfPFjOVzJPc28LvrDt_Q/view) &nbsp;&nbsp;•&nbsp;&nbsp; [🚀 Live Deployment](https://sih-cognicare-ner-26003.vercel.app)
+
 </div>
 
 ---
 
-## 📖 Overview
-**CogniCare NER** is an edge-native, AI-powered cognitive therapy platform engineered specifically for the North Eastern Region (NER) of India. 
+## 📖 The Problem
 
-Dementia affects over 5.3 million elderly in India. In the NER, this crisis is compounded by severe language barriers, extreme rural connectivity deficits, and a lack of geriatric specialists. Generic, English-first puzzle apps fail to provide meaningful clinical therapy.
+Dementia affects **5.3 million elderly** in India. In the North Eastern Region, this crisis is made far worse by:
 
-CogniCare solves this by delivering **Culturally Localized Games**, a **Voice-First UI in 7 NER Languages**, and **AI Vocal Biomarker Detection** entirely through a **100% Offline Progressive Web App (PWA)**.
+- **Language barriers** — existing apps are English-only, while NER elderly speak Assamese, Mizo, Khasi, Manipuri
+- **Zero internet** — cloud-dependent apps fail completely in remote districts like Majuli and Tawang
+- **Cultural disconnect** — generic western puzzles don't trigger the autobiographical memory pathways that therapy requires
+- **No clinical tracking** — caregivers rely on subjective memory; doctors get zero continuous telemetry
+
+**90% of rural dementia patients remain undiagnosed and untreated.** *(Source: ARDSI Report)*
 
 ---
 
-## ✨ Core Clinical Capabilities
+## 💡 Our Solution
 
-1. **🎙️ Voice-First NER Interface:** Powered by Gemini 3.5, the elderly navigate entirely by speaking in Assamese, Manipuri, Khasi, Mizo, Bengali, Hindi, or English. Zero tech literacy required.
-2. **🧩 13 Cognitive Games:** Targets 8 clinical domains (Memory, Executive Function, Visuospatial). Games are culturally rooted (e.g., Kaziranga animals, Bihu proverbs) to trigger deep autobiographical memory.
-3. **〰️ Vocal Biomarker Analyzer:** Actively analyzes speech cadence, filler word frequency, and Type-Token Ratio (TTR) to detect hidden cognitive load.
-4. **📶 100% Offline Edge Infrastructure:** Service Workers and IndexedDB cache the entire engine locally. Procedural Audio Synthesis replaces massive MP3 downloads. It works flawlessly in zero-connectivity zones like Majuli.
-5. **🧮 Caregiver Clinical Dashboard:** Converts raw gameplay telemetry and voice data into an MMSE-grade Cognitive Wellness Index (CWI) for remote doctors.
-6. **🚨 Smart Reminders & SOS:** Automated medicine/hydration audio reminders in native dialects, plus a one-tap wandering SOS.
+CogniCare NER is an **offline-first Progressive Web App** that delivers culturally localized cognitive therapy directly on existing low-end smartphones — no app store, no internet required.
+
+### Core Capabilities
+
+| # | Feature | How It Works |
+|:--|:--------|:-------------|
+| 1 | **13 Clinical Cognitive Games** | Mapped to 8 cognitive domains — Memory, Attention, Executive Function, Visuospatial, Language, Problem Solving, Processing Speed, Motor Skills |
+| 2 | **Voice-First AI Assistant (Smriti Saathi)** | Powered by Gemini 3.5 — supports Assamese, Manipuri, Khasi, Mizo, Bengali, Hindi, English |
+| 3 | **Vocal Biomarker Detection** | Passively tracks Type-Token Ratio, filler words, speech cadence, and bigram repetition to flag cognitive decline |
+| 4 | **100% Offline PWA** | Service Workers + IndexedDB — full therapy runs locally with zero connectivity |
+| 5 | **Procedural NER Audio Engine** | 6 folk instruments (Bihu Dhol, Pepa, Pung, Taal, Bamboo Flute, Mizo Gong) synthesized via Web Audio API — zero MP3 downloads |
+| 6 | **Caregiver Dashboard** | Weekly CWI trends, per-game analytics, vocal biomarker history, burnout risk assessment |
+| 7 | **Smart Reminders & Emergency SOS** | Native-dialect medicine/hydration alerts + one-tap wandering emergency contact |
+| 8 | **Geriatric-First UI** | 56px+ touch targets, high-contrast themes, zero nested menus, single-tap navigation |
+
+---
+
+## 🎮 The 13 Games
+
+| Game | Cognitive Domain | What the Patient Does |
+|:-----|:-----------------|:----------------------|
+| Memory Match | Short-Term Memory | Match pairs of Bihu Dhols, Rhinos, Japi hats |
+| Family Faces | Autobiographical Memory | Identify uploaded family photos by name |
+| Melody Memory | Working Memory | Repeat patterns of synthesized NER instruments |
+| Daily Routine | Executive Function | Drag-and-drop daily tasks in chronological order |
+| Cultural Connections | Associative Memory | Connect cultural items to their NER states |
+| Proverb Completion | Semantic Language | Complete famous Assamese/Hindi proverbs |
+| Word Completion | Linguistics | Fill missing letters in common words |
+| Number Patterns | Mathematical Cognition | Identify the next number in a sequence |
+| Colour-Word Match | Attention (Stroop Test) | Name the ink color, not the written word |
+| Market Sorting | Categorization | Sort grocery items into correct categories |
+| Odd One Out | Visual Discrimination | Identify the item that doesn't belong |
+| Pattern Replication | Visuospatial Skills | Reproduce visual patterns on a grid |
+| Calm Mode | Sundowning Therapy | 40Hz Gamma binaural beats + procedural rain sounds |
 
 ---
 
 ## 🏗️ System Architecture
 
-Our 4-layer edge-native architecture ensures absolute data privacy and zero latency.
-
-*   **1. Patient Interface:** Web Speech API (STT), Touch Events, Geriatric UI (56px+ targets, ultra-high contrast).
-*   **2. Core AI Engine:** Gemini 3.5 Voice Assistant, Adaptive Difficulty heuristics, Vocal Biomarker Extractor.
-*   **3. Local Data Layer:** IndexedDB (Scores/Logs caching), Service Workers (Offline PWA routing), Web Audio API (Procedural folk music synthesis).
-*   **4. Clinical Output:** Caregiver Analytics Dashboard, CWI Calculator, Sundowning Alerts, PDF Reports.
-
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technologies Used |
-| :--- | :--- |
-| **Frontend UI** | React 18, Vite, Tailwind CSS, Lucide Icons |
-| **Edge / Offline** | Workbox (Service Workers), LocalForage (IndexedDB) |
-| **Generative AI** | Google Gemini 3.5 Flash, Web Speech API |
-| **Audio Engine** | Native Web Audio API (Oscillator/Gain Synthesis) |
-| **Backend / DB** | Node.js, Express.js, MongoDB Atlas |
+```
+┌─────────────────────────────────────────────────────┐
+│  Tier 1: Patient Interface (React 18 PWA)           │
+│  Web Speech API · Touch Events · Geriatric UI       │
+├─────────────────────────────────────────────────────┤
+│  Tier 2: Core AI Engine                             │
+│  Gemini 3.5 · Adaptive Difficulty · Biomarkers      │
+├─────────────────────────────────────────────────────┤
+│  Tier 3: Edge Data Layer                            │
+│  IndexedDB · Service Workers · Web Audio API         │
+├─────────────────────────────────────────────────────┤
+│  Tier 4: Clinical Output                            │
+│  Caregiver Dashboard · Alerts · Reminders · SOS     │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🚀 Local Development Setup
+## 🛠️ Tech Stack
 
-To run this project locally on your machine for evaluation:
+| Layer | Technologies |
+|:------|:-------------|
+| **Frontend** | React 18, Vite, React Router, Lucide Icons, CSS3 Custom Properties |
+| **Offline/Edge** | Service Workers (Workbox), IndexedDB, Web Audio API |
+| **AI & Voice** | Google Gemini 3.5 Flash, Web Speech API (STT/TTS) |
+| **Audio Engine** | Native Web Audio API — OscillatorNode, GainNode, BiquadFilterNode |
+| **State** | React Context API (AppContext.jsx — comprehensive patient/game/language state) |
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+├── components/          # Reusable UI — VoiceAssistant, EmergencySOS, SmritiSaathi, MoodCheckIn
+├── context/             # AppContext.jsx — centralized state for patients, games, translations
+├── games/               # 13 clinical game components
+├── pages/               # Landing, PatientHub, CaregiverDashboard, Reminders, Alerts, Profiles
+├── services/            # Gemini API integration
+└── utils/               # audio.js (NER synthesis), speechAnalyzer.js (biomarkers), tts.js, telemetry.js
+```
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Google Gemini API Key
+- Node.js v18+
+- A Google Gemini API key
 
-### Installation
+### Run Locally
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-org/CogniCare-NER.git
-   cd CogniCare-NER
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/itsdarshanjain/sih-cognicare-ner-26003.git
+cd sih-cognicare-ner-26003
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+# Install dependencies
+npm install
 
-3. **Configure Environment Variables:**
-   Create a `.env` file in the root directory and add your API keys:
-   ```env
-   VITE_GEMINI_API_KEY=your_gemini_api_key_here
-   ```
+# Create .env file with your Gemini key
+echo "VITE_GEMINI_API_KEY=your_key_here" > .env
 
-4. **Start the Development Server:**
-   ```bash
-   npm run dev
-   ```
-   The application will be available at `http://localhost:5173`.
+# Start development server
+npm run dev
+```
 
-5. **Build for Production (PWA Generation):**
-   ```bash
-   npm run build
-   ```
+The app will be running at `http://localhost:5173`
+
+### Build for Production
+
+```bash
+npm run build
+npm run preview
+```
 
 ---
 
-## 🛡️ Clinical Feasibility & Privacy
+## 👥 Team Prakalp
 
-*   **Zero Hardware Cost:** Runs natively in the browser on existing ₹5,000 Android smartphones. No specialized medical tablets required.
-*   **Edge Data Privacy:** AI processing and telemetry storage happen locally via IndexedDB. Sensitive medical data never leaves the device unless explicitly authorized for cloud backup.
+| # | Name | Role |
+|:--|:-----|:-----|
+| 1 | **Darshan Jain** | Team Leader |
+| 2 | **Apurva Verma** | Developer |
+| 3 | **Tejasree** | Research |
+| 4 | **Chinmay Gour** | Developer |
+| 5 | **Prasanna Parmar** | Developer |
+| 6 | **Puja Pawar** | Developer |
+
+**Institute of Engineering & Science, IPS Academy, Indore**
 
 ---
 
 <div align="center">
-  <p><i>Built with empathy for the elderly by Team Prakalp.</i></p>
+  <sub>Built with ❤️ for the elderly of North East India — Team Prakalp, SIH 2026</sub>
 </div>
